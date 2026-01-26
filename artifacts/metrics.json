@@ -1,0 +1,281 @@
+{
+  "metadata": {
+    "generated_at": "2026-01-25T19:54:30.118735",
+    "input_file": "data\\clean.csv",
+    "total_rows": 394
+  },
+  "metrics": {
+    "total_responses": {
+      "n": 394,
+      "completed": 329
+    },
+    "mode_distribution": {
+      "counts": {
+        "Personal vehicle (car, motorbike)": 336,
+        "Walk": 47,
+        "Carpool/ride\u2011share": 4,
+        "Public Transport": 3,
+        "Bike/scooter": 2
+      },
+      "total": 392
+    },
+    "frequency_distribution": {
+      "counts": {
+        "Daily": 299,
+        "3-4 times a week": 57,
+        "1-2 times a week": 31,
+        "Never": 5
+      },
+      "total": 392
+    },
+    "ease_distribution": {
+      "counts": {
+        "Very Difficult": 178,
+        "Difficult": 135,
+        "Neutral": 52,
+        "Easy": 19,
+        "Very Easy": 8
+      },
+      "total": 392,
+      "difficult_rate": {
+        "n": 313,
+        "N": 392,
+        "pct": 79.8
+      }
+    },
+    "arrival_distribution": {
+      "counts": {
+        "8-10 AM": 236,
+        "10 AM-12 PM": 66,
+        "Before 8 AM": 51,
+        "After 2 PM": 23,
+        "12-2 PM": 13
+      },
+      "total": 389
+    },
+    "skip_rate": {
+      "n": 310,
+      "N": 388,
+      "pct": 79.9
+    },
+    "minutes_searching": {
+      "mean": 14.5,
+      "median": 10.0,
+      "min": 0.0,
+      "max": 90.0,
+      "n": 370
+    },
+    "pay_to_park_sentiment": {
+      "counts": {
+        "Need a lot less of them": 104,
+        "Need slightly more of them": 82,
+        "Need a lot more of them": 66,
+        "Keep the same number": 47,
+        "Need slightly less of them": 31,
+        "5": 1,
+        "4": 1
+      },
+      "total": 332
+    },
+    "crimson_ride_awareness": {
+      "n": 263,
+      "N": 332,
+      "pct": 79.2
+    },
+    "crimson_ride_willingness": {
+      "n": 182,
+      "N": 327,
+      "pct": 55.7
+    }
+  },
+  "rankings": {
+    "Too few spots": {
+      "rank_counts": {
+        "1": 186,
+        "2": 97,
+        "3": 73,
+        "4": 14,
+        "5": 2,
+        "6": 1
+      },
+      "weighted_score": 825,
+      "top3_count": 356,
+      "top3_pct": 95.4,
+      "total_ranked": 373
+    },
+    "Distance from classes": {
+      "rank_counts": {
+        "2": 157,
+        "3": 99,
+        "1": 84,
+        "4": 21,
+        "5": 11,
+        "6": 1
+      },
+      "weighted_score": 665,
+      "top3_count": 340,
+      "top3_pct": 91.2,
+      "total_ranked": 373
+    },
+    "High cost": {
+      "rank_counts": {
+        "3": 127,
+        "2": 101,
+        "1": 91,
+        "4": 36,
+        "5": 17,
+        "6": 1
+      },
+      "weighted_score": 602,
+      "top3_count": 319,
+      "top3_pct": 85.5,
+      "total_ranked": 373
+    },
+    "Other": {
+      "rank_counts": {
+        "6": 306,
+        "4": 20,
+        "3": 18,
+        "5": 14,
+        "2": 8,
+        "1": 7
+      },
+      "weighted_score": 55,
+      "top3_count": 33,
+      "top3_pct": 8.8,
+      "total_ranked": 373
+    },
+    "Poor navigation": {
+      "rank_counts": {
+        "5": 193,
+        "4": 102,
+        "6": 37,
+        "3": 36,
+        "2": 4,
+        "1": 1
+      },
+      "weighted_score": 47,
+      "top3_count": 41,
+      "top3_pct": 11.0,
+      "total_ranked": 373
+    },
+    "Security concerns": {
+      "rank_counts": {
+        "4": 180,
+        "5": 136,
+        "6": 27,
+        "3": 20,
+        "2": 6,
+        "1": 4
+      },
+      "weighted_score": 44,
+      "top3_count": 30,
+      "top3_pct": 8.0,
+      "total_ranked": 373
+    }
+  },
+  "segments": {
+    "by_arrival_time": {
+      "10 AM-12 PM": {
+        "n": 66,
+        "avg_pfs": 0.671,
+        "skip_rate": 87.9,
+        "avg_minutes": 16.4
+      },
+      "12-2 PM": {
+        "n": 13,
+        "avg_pfs": 0.704,
+        "skip_rate": 92.3,
+        "avg_minutes": 15.8
+      },
+      "8-10 AM": {
+        "n": 236,
+        "avg_pfs": 0.634,
+        "skip_rate": 80.0,
+        "avg_minutes": 14.5
+      },
+      "After 2 PM": {
+        "n": 23,
+        "avg_pfs": 0.686,
+        "skip_rate": 91.3,
+        "avg_minutes": 14.9
+      },
+      "Before 8 AM": {
+        "n": 51,
+        "avg_pfs": 0.523,
+        "skip_rate": 62.0,
+        "avg_minutes": 11.0
+      }
+    },
+    "by_mode": {
+      "Bike/scooter": {
+        "n": 2,
+        "avg_pfs": 0.345,
+        "skip_rate": 0.0
+      },
+      "Carpool/ride\u2011share": {
+        "n": 4,
+        "avg_pfs": 0.518,
+        "skip_rate": 75.0
+      },
+      "Personal vehicle (car, motorbike)": {
+        "n": 336,
+        "avg_pfs": 0.626,
+        "skip_rate": 79.2
+      },
+      "Public Transport": {
+        "n": 3,
+        "avg_pfs": 0.682,
+        "skip_rate": 100.0
+      },
+      "Walk": {
+        "n": 47,
+        "avg_pfs": 0.683,
+        "skip_rate": 87.2
+      }
+    },
+    "by_frequency": {
+      "1-2 times a week": {
+        "n": 31,
+        "avg_pfs": 0.706,
+        "skip_rate": 96.8
+      },
+      "3-4 times a week": {
+        "n": 57,
+        "avg_pfs": 0.62,
+        "skip_rate": 78.9
+      },
+      "Daily": {
+        "n": 299,
+        "avg_pfs": 0.626,
+        "skip_rate": 78.7
+      },
+      "Never": {
+        "n": 5,
+        "avg_pfs": 0.559,
+        "skip_rate": 50.0
+      }
+    }
+  },
+  "ada": {
+    "opted_in": 79,
+    "satisfaction": {
+      "counts": {
+        "Neither satisfied nor dissatisfied": 32,
+        "Somewhat dissatisfied": 18,
+        "Very satisfied": 9,
+        "Somewhat satisfied": 9,
+        "Very dissatisfied": 7
+      },
+      "total": 79
+    },
+    "adequacy": {
+      "counts": {
+        "Unsure": 29,
+        "Yes": 28,
+        "No": 19
+      },
+      "total": 79
+    }
+  }
+}
