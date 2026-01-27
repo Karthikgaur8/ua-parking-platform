@@ -1,6 +1,6 @@
 # 🅿️ UA Parking Intelligence Platform
 
-> **Full-stack analytics platform** transforming 390 raw survey responses into actionable insights using AI-powered theme clustering, semantic embeddings, and interactive data visualization.
+> **Full-stack analytics platform** transforming raw survey responses into actionable insights using AI-powered theme clustering, semantic embeddings, and interactive data visualization.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)](https://python.org)
