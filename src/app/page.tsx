@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { getMetrics } from '@/lib/data';
 import { StatCard } from '@/components/StatCard';
 import { RankingsChart } from '@/components/RankingsChart';
@@ -24,7 +25,21 @@ export default async function Dashboard() {
                 Survey Analysis Dashboard • {metrics.total_responses.completed} completed responses
               </p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
+              <nav className="flex items-center gap-4">
+                <Link
+                  href="/"
+                  className="text-white font-medium px-3 py-1.5 rounded-lg bg-white/10"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/evidence"
+                  className="text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-lg hover:bg-white/5"
+                >
+                  Evidence
+                </Link>
+              </nav>
               <span className="text-xs text-gray-500">
                 Last updated: {new Date(data.metadata.generated_at).toLocaleDateString()}
               </span>

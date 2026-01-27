@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "generated_at": "2026-01-26T23:22:40.453925",
+    "input_file": "data\\clean.csv",
+    "total_texts": 289,
+    "n_clusters": 4
+  },
+  "themes": [
+    {
+      "id": 1,
+      "label": "Closer Parking",
+      "count": 141,
+      "pct": 48.8,
+      "quotes": [
+        "More parking spots near halls more inner on campus that are ether pay to park or free",
+        "More parking spots close to campus ",
+        "Building more spots on campus so I don\u2019t have to park so far away from everything and walk a decent bit to class",
+        "More parking close to campus",
+        "more allowance of parking on campus - not huge specified lots but lots that allow more types of passes to park"
+      ],
+      "segments": {
+        "by_arrival_time": {
+          "8-10 AM": 89,
+          "Before 8 AM": 21,
+          "10 AM-12 PM": 16,
+          "After 2 PM": 12,
+          "12-2 PM": 3
+        },
+        "by_mode": {
+          "Personal vehicle (car, motorbike)": 124,
+          "Walk": 15,
+          "Carpool/ride\u2011share": 1,
+          "Public Transport": 1
+        },
+        "skip_rate": 0.8368794326241135
+      }
+    },
+    {
+      "id": 0,
+      "label": "Add More Capacity",
+      "count": 88,
+      "pct": 30.4,
+      "quotes": [
+        "More parking spots and less expensive rates",
+        "More parking spots. ",
+        "Add more parking. Allow people to park in areas that are more convenient to them. ",
+        "More parking spots",
+        "More parking spots"
+      ],
+      "segments": {
+        "by_arrival_time": {
+          "8-10 AM": 54,
+          "10 AM-12 PM": 15,
+          "Before 8 AM": 10,
+          "12-2 PM": 5,
+          "After 2 PM": 4
+        },
+        "by_mode": {
+          "Personal vehicle (car, motorbike)": 73,
+          "Walk": 10,
+          "Public Transport": 2,
+          "Bike/scooter": 2,
+          "Carpool/ride\u2011share": 1
+        },
+        "skip_rate": 0.8295454545454546
+      }
+    },
+    {
+      "id": 3,
+      "label": "Lower Costs",
+      "count": 31,
+      "pct": 10.7,
+      "quotes": [
+        "more spots and less expensive ",
+        "more spots and easier availability ",
+        "More spots. There is plenty of room ",
+        "more spots better location ",
+        "More spots that cost less"
+      ],
+      "segments": {
+        "by_arrival_time": {
+          "8-10 AM": 20,
+          "10 AM-12 PM": 7,
+          "After 2 PM": 2,
+          "12-2 PM": 1,
+          "Before 8 AM": 1
+        },
+        "by_mode": {
+          "Personal vehicle (car, motorbike)": 25,
+          "Walk": 6
+        },
+        "skip_rate": 0.8064516129032258
+      }
+    },
+    {
+      "id": 2,
+      "label": "Improve Transit",
+      "count": 29,
+      "pct": 10.0,
+      "quotes": [
+        "Express bus routes with fewer stops for communters. Waiting 20 minutes for a bus to take you from parking to class is less efficient than just walking.",
+        "Improve the Campus Ride - I would use it consistently around campus if it had consistent, predictable arrival and departure times. For example, the East Edge bus is extremely popular with students. It is popular because students know where it will take them, when it will arrive, and when it will get them to their destination. These factors allow students to plan public transportation into their routine. The on-campus routes, on the other hand, have no set schedule, so it is impossible to actually plan to use them unless you have an extra 3 hours in your day to wait around for one and wonder when it will get to you.",
+        "Lowering cost. It is ridiculous as a student to pay $400 extra for a spot when we already pay tuition plus a multitude of other fees. ",
+        "Make bus routes more spaced out, at regular intervals. Sometimes there's a wave of similar bus routes, meaning that you either wait a little bit of time for a bus or a very long time.",
+        "We need to adapt to common transit features like other campuses around the US. Passio go is too confusing to the average student. If students could track the busses and learn how to get somewhere just using maps, I\u2019m confident that Crimson Ride usage would greatly increase. "
+      ],
+      "segments": {
+        "by_arrival_time": {
+          "8-10 AM": 16,
+          "Before 8 AM": 5,
+          "10 AM-12 PM": 4,
+          "12-2 PM": 2,
+          "After 2 PM": 2
+        },
+        "by_mode": {
+          "Personal vehicle (car, motorbike)": 22,
+          "Walk": 7
+        },
+        "skip_rate": 0.7241379310344828
+      }
+    }
+  ]
+}
