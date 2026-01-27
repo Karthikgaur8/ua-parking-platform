@@ -17,7 +17,7 @@ Real-time visualization of survey insights with **consulting-grade metrics**:
 - **Difficulty Rate**: 80.5% report parking as difficult (265/329)
 - **Weighted Rankings**: Challenge priorities using 3×rank1 + 2×rank2 + rank3 scoring
 
-![Dashboard Preview](docs/images/dashboard-preview.png)
+![Dashboard Preview](docs/Dashboard_preview.png)
 
 ### 🧠 AI-Powered Theme Clustering
 Unsupervised NLP pipeline that automatically categorizes 289 free-text responses:
