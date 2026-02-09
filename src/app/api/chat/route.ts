@@ -153,59 +153,52 @@ export async function POST(request: NextRequest) {
                 { status: 500 }
             );
         }
-        console.log('API key found, length:', apiKey.length);
 
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        // gemini-2.0-flash is fast and cost-effective
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-001' });
 
         // Build the prompt with RAG context
-        const systemPrompt = `You are an AI assistant analyzing university parking survey data from the University of Alabama.
-You have access to real student quotes from the survey organized by themes. Use these quotes to answer questions.
+        const prompt = `You are a data analyst assistant for University of Alabama parking survey data.
 
-IMPORTANT RULES:
-1. Base your answers on the survey data provided
-2. Cite specific quotes when relevant using [Quote X] references
-3. Be concise but insightful
-4. If asked about topics not covered in the quotes, say so honestly
-5. Provide actionable insights when possible
+SURVEY THEMES (by response count):
+${themes.themes.map(t => `• ${t.label}: ${t.count} responses (${t.pct}%)`).join('\n')}
 
-THEME SUMMARY:
-${themes.themes.map(t => `- ${t.label}: ${t.count} responses (${t.pct}%)`).join('\n')}
-
-RELEVANT SURVEY QUOTES:
+RELEVANT STUDENT QUOTES:
 ${context}
 
-Now answer the user's question based on these quotes.`;
+USER QUESTION: ${message}
 
-        // Build conversation history for the model
-        const conversationHistory = history.map((msg: Message) => ({
-            role: msg.role === 'user' ? 'user' : 'model',
-            parts: [{ text: msg.content }],
-        }));
+Instructions:
+- Provide a concise, data-driven answer (2-3 sentences max)
+- Reference specific quotes using [Quote X] format when relevant
+- If the data doesn't cover the topic, say so honestly`;
 
-        // Add system prompt to first message or create new chat
-        const chat = model.startChat({
-            history: [
-                { role: 'user', parts: [{ text: systemPrompt }] },
-                { role: 'model', parts: [{ text: 'I understand. I will analyze the parking survey data and provide insights based on the student quotes provided. How can I help you?' }] },
-                ...conversationHistory,
-            ],
-        });
+        // Single attempt for paid tier (rate limits not an issue)
+        try {
+            const result = await model.generateContent(prompt);
+            const response = result.response.text();
 
-        // Generate response
-        const result = await chat.sendMessage(message);
-        const response = result.response.text();
+            return NextResponse.json({
+                response,
+                sources: relevantDocs.map(d => ({
+                    id: d.id,
+                    text: d.text.slice(0, 200) + (d.text.length > 200 ? '...' : ''),
+                    source: d.source,
+                    arrival_time: d.arrival_time,
+                    mode: d.mode,
+                })),
+            });
+        } catch (err) {
+            const errorMsg = err instanceof Error ? err.message : String(err);
+            console.error('Gemini API error:', errorMsg);
 
-        return NextResponse.json({
-            response,
-            sources: relevantDocs.map(d => ({
-                id: d.id,
-                text: d.text.slice(0, 200) + (d.text.length > 200 ? '...' : ''),
-                source: d.source,
-                arrival_time: d.arrival_time,
-                mode: d.mode,
-            })),
-        });
+            // Return helpful error to user
+            return NextResponse.json({
+                error: 'Unable to generate response. Please try again.',
+                details: process.env.NODE_ENV === 'development' ? errorMsg : undefined,
+            }, { status: 500 });
+        }
 
     } catch (error) {
         console.error('Chat API error details:', {

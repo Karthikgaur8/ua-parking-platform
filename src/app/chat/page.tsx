@@ -1,5 +1,5 @@
 import ChatInterface from '@/components/ChatInterface';
-import Link from 'next/link';
+import NavHeader from '@/components/NavHeader';
 
 export const metadata = {
     title: 'AI Chat | UA Parking Analytics',
@@ -9,44 +9,10 @@ export const metadata = {
 export default function ChatPage() {
     return (
         <main className="min-h-screen bg-gray-950 text-white">
-            {/* Header */}
-            <header className="border-b border-gray-800 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
-                <div className="container mx-auto px-4 py-4">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                                🤖 AI Survey Analyst
-                            </h1>
-                            <p className="text-gray-400 text-sm">
-                                Natural language Q&A powered by RAG
-                            </p>
-                        </div>
-                        <nav className="flex items-center gap-4">
-                            <Link
-                                href="/"
-                                className="text-gray-400 hover:text-white px-3 py-1.5 rounded-lg transition-colors"
-                            >
-                                Dashboard
-                            </Link>
-                            <Link
-                                href="/evidence"
-                                className="text-gray-400 hover:text-white px-3 py-1.5 rounded-lg transition-colors"
-                            >
-                                Evidence
-                            </Link>
-                            <Link
-                                href="/chat"
-                                className="text-white font-medium px-3 py-1.5 rounded-lg bg-white/10"
-                            >
-                                Chat
-                            </Link>
-                        </nav>
-                    </div>
-                </div>
-            </header>
+            <NavHeader subtitle="AI Survey Analyst" />
 
             {/* Main Content */}
-            <div className="container mx-auto px-4 py-8">
+            <div className="max-w-7xl mx-auto px-6 py-8">
                 {/* Info Banner */}
                 <div className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 rounded-2xl p-6 mb-8 border border-blue-800/50">
                     <div className="flex items-start gap-4">

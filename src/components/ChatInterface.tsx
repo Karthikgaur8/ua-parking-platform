@@ -65,11 +65,19 @@ export default function ChatInterface({ initialMessage }: ChatInterfaceProps) {
                 }),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to get response');
-            }
-
             const data = await response.json();
+
+            // Handle error responses
+            if (!response.ok || data.error) {
+                if (response.status === 503 || data.retryAfter) {
+                    setError(`⏳ AI service is busy. Please wait ${data.retryAfter || 30}s and try again.`);
+                } else if (response.status === 500) {
+                    setError('🔧 Server error. Please try again in a moment.');
+                } else {
+                    setError(data.error || 'Failed to get response. Please try again.');
+                }
+                return;
+            }
 
             // Add assistant response
             setMessages((prev) => [
@@ -81,7 +89,7 @@ export default function ChatInterface({ initialMessage }: ChatInterfaceProps) {
                 },
             ]);
         } catch (err) {
-            setError('Failed to get response. Please try again.');
+            setError('❌ Connection error. Please check your internet and try again.');
             console.error('Chat error:', err);
         } finally {
             setIsLoading(false);
@@ -99,8 +107,8 @@ export default function ChatInterface({ initialMessage }: ChatInterfaceProps) {
                     >
                         <div
                             className={`max-w-[80%] rounded-2xl px-4 py-3 ${msg.role === 'user'
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-800 text-gray-100'
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-800 text-gray-100'
                                 }`}
                         >
                             <div className="whitespace-pre-wrap">{msg.content}</div>

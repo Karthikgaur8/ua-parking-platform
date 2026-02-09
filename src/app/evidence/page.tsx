@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import ThemeExplorer from '@/components/ThemeExplorer';
+import NavHeader from '@/components/NavHeader';
 
 interface Theme {
     id: number;
@@ -133,24 +134,7 @@ export default function EvidencePage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-            {/* Header */}
-            <header className="border-b border-white/10 bg-black/20 backdrop-blur-sm">
-                <div className="max-w-7xl mx-auto px-6 py-4">
-                    <nav className="flex items-center justify-between">
-                        <a href="/" className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 
-                            flex items-center justify-center">
-                                <span className="text-xl">🅿️</span>
-                            </div>
-                            <span className="text-xl font-bold text-white">UA Parking Analytics</span>
-                        </a>
-                        <div className="flex items-center gap-6">
-                            <a href="/" className="text-white/60 hover:text-white transition-colors">Dashboard</a>
-                            <a href="/evidence" className="text-white font-medium">Evidence</a>
-                        </div>
-                    </nav>
-                </div>
-            </header>
+            <NavHeader subtitle="Evidence Engine" />
 
             <main className="max-w-7xl mx-auto px-6 py-8">
                 {/* Page Title */}

@@ -4,6 +4,7 @@ import { StatCard } from '@/components/StatCard';
 import { RankingsChart } from '@/components/RankingsChart';
 import { SegmentChart } from '@/components/SegmentChart';
 import { DistributionPie } from '@/components/DistributionPie';
+import NavHeader from '@/components/NavHeader';
 
 const ARRIVAL_ORDER = ['Before 8 AM', '8-10 AM', '10 AM-12 PM', '12-2 PM', 'After 2 PM'];
 
@@ -13,46 +14,7 @@ export default async function Dashboard() {
 
   return (
     <main className="min-h-screen bg-gray-950 text-white">
-      {/* Header */}
-      <header className="border-b border-gray-800 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                UA Parking Intelligence
-              </h1>
-              <p className="text-sm text-gray-400 mt-1">
-                Survey Analysis Dashboard • {metrics.total_responses.completed} completed responses
-              </p>
-            </div>
-            <div className="flex items-center gap-6">
-              <nav className="flex items-center gap-4">
-                <Link
-                  href="/"
-                  className="text-white font-medium px-3 py-1.5 rounded-lg bg-white/10"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href="/evidence"
-                  className="text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-lg hover:bg-white/5"
-                >
-                  Evidence
-                </Link>
-                <Link
-                  href="/chat"
-                  className="text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-lg hover:bg-white/5"
-                >
-                  🤖 Chat
-                </Link>
-              </nav>
-              <span className="text-xs text-gray-500">
-                Last updated: {new Date(data.metadata.generated_at).toLocaleDateString()}
-              </span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <NavHeader subtitle={`Survey Dashboard • ${metrics.total_responses.completed} responses`} />
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Hero Stats */}

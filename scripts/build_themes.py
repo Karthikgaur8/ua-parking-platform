@@ -114,8 +114,8 @@ def embed_texts(texts: list[str], batch_size: int = 20) -> np.ndarray:
                 # Use zero vector as fallback
                 embeddings.append([0.0] * 768)
             
-            # Rate limiting
-            time.sleep(0.1)
+            # Minimal delay for paid tier (adjust if needed)
+            time.sleep(0.02)
     
     return np.array(embeddings)
 
@@ -148,8 +148,8 @@ def cluster_texts(embeddings: np.ndarray, n_clusters: int) -> tuple[np.ndarray, 
     return labels, kmeans
 
 
-def label_cluster(texts: list[str], model_name: str = "gemini-1.5-flash") -> str:
-    """Generate a short label for a cluster using LLM with retry logic."""
+def label_cluster(texts: list[str], model_name: str = "gemini-2.0-flash-001") -> str:
+    """Generate a short label for a cluster using LLM."""
     # Sample up to 5 texts
     sample = texts[:5]
     prompt = f"""Below are student comments about university parking. 
@@ -161,8 +161,9 @@ Comments:
 Reply with ONLY the label, nothing else. Examples: "Cost Concerns", "Need More Spots", "Distance Issues"
 """
     
-    max_retries = 3
-    base_delay = 2.0  # seconds
+    # Single attempt for paid tier (no retries needed)
+    max_retries = 1
+    base_delay = 0.5  # seconds (minimal)
     
     for attempt in range(max_retries):
         try:
@@ -239,7 +240,7 @@ def generate_fallback_label(texts: list[str], used_labels: set = None) -> str:
     return f"Theme {len(used_labels) + 1}"
 
 
-def generate_all_labels(cluster_data: list[dict], model_name: str = "gemini-1.5-flash") -> list[str]:
+def generate_all_labels(cluster_data: list[dict], model_name: str = "gemini-2.0-flash-001") -> list[str]:
     """Generate ALL cluster labels in one API call to ensure uniqueness."""
     
     # Build prompt with samples from each cluster
@@ -264,8 +265,9 @@ Distance to Class
 Bus Route Issues
 """
     
-    max_retries = 3
-    base_delay = 5.0  # Start with longer delay for this bigger request
+    # Single attempt for paid tier
+    max_retries = 1
+    base_delay = 0.5
     
     for attempt in range(max_retries):
         try:
