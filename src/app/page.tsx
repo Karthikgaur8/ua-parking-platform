@@ -4,6 +4,7 @@ import { StatCard } from '@/components/StatCard';
 import { RankingsChart } from '@/components/RankingsChart';
 import { SegmentChart } from '@/components/SegmentChart';
 import { DistributionPie } from '@/components/DistributionPie';
+import { SentimentBar } from '@/components/SentimentBar';
 import NavHeader from '@/components/NavHeader';
 
 const ARRIVAL_ORDER = ['Before 8 AM', '8-10 AM', '10 AM-12 PM', '12-2 PM', 'After 2 PM'];
@@ -96,7 +97,7 @@ export default async function Dashboard() {
               title="Parking Frequency"
               data={metrics.frequency_distribution.counts}
             />
-            <DistributionPie
+            <SentimentBar
               title="Pay-to-Park Sentiment"
               data={metrics.pay_to_park_sentiment.counts}
             />

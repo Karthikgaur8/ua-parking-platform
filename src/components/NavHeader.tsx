@@ -27,7 +27,7 @@ export default function NavHeader({ subtitle }: NavHeaderProps) {
                         </span>
                         <div>
                             <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                                UA Parking Analytics
+                                UA Parking Intelligence
                             </h1>
                             {subtitle && (
                                 <p className="text-xs text-gray-400">{subtitle}</p>

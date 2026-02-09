@@ -21,7 +21,8 @@ const DEFAULT_COLORS = ['#3b82f6', '#8b5cf6', '#ec4899', '#f97316', '#22c55e', '
 
 export function DistributionPie({ title, data, colorScheme = 'default' }: DistributionPieProps) {
     const chartData = Object.entries(data)
-        .filter(([key]) => !['total'].includes(key.toLowerCase()))
+        // Filter out 'total' and numeric-only keys like '4', '5' (data cleaning artifacts)
+        .filter(([key]) => !['total'].includes(key.toLowerCase()) && !/^\d+$/.test(key))
         .map(([name, value], index) => ({
             name,
             value,
@@ -40,17 +41,17 @@ export function DistributionPie({ title, data, colorScheme = 'default' }: Distri
             transition={{ duration: 0.5, delay: 0.4 }}
             className="rounded-2xl border border-gray-800 bg-gray-900/50 p-6 backdrop-blur-sm"
         >
-            <h3 className="text-lg font-semibold text-white mb-4">{title}</h3>
+            <h3 className="text-lg font-semibold text-white mb-4 text-center">{title}</h3>
 
-            <div className="h-[280px]">
+            <div className="h-[320px]">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                         <Pie
                             data={chartData}
                             cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={90}
+                            cy="40%"
+                            innerRadius={70}
+                            outerRadius={100}
                             paddingAngle={2}
                             dataKey="value"
                         >
@@ -63,6 +64,11 @@ export function DistributionPie({ title, data, colorScheme = 'default' }: Distri
                                 backgroundColor: '#1f2937',
                                 border: '1px solid #374151',
                                 borderRadius: '8px',
+                            }}
+                            itemStyle={{
+                                color: '#fff',
+                            }}
+                            labelStyle={{
                                 color: '#fff',
                             }}
                             formatter={(value) => {
@@ -71,10 +77,15 @@ export function DistributionPie({ title, data, colorScheme = 'default' }: Distri
                             }}
                         />
                         <Legend
+                            layout="horizontal"
                             verticalAlign="bottom"
-                            height={36}
+                            align="center"
+                            wrapperStyle={{
+                                paddingTop: '15px',
+                                fontSize: '13px',
+                            }}
                             formatter={(value) => (
-                                <span className="text-gray-300 text-sm">{String(value)}</span>
+                                <span style={{ color: '#d1d5db', fontSize: '13px' }}>{String(value)}</span>
                             )}
                         />
                     </PieChart>
@@ -83,3 +94,4 @@ export function DistributionPie({ title, data, colorScheme = 'default' }: Distri
         </motion.div>
     );
 }
+
