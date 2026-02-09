@@ -39,6 +39,12 @@ export default async function Dashboard() {
                 >
                   Evidence
                 </Link>
+                <Link
+                  href="/chat"
+                  className="text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-lg hover:bg-white/5"
+                >
+                  🤖 Chat
+                </Link>
               </nav>
               <span className="text-xs text-gray-500">
                 Last updated: {new Date(data.metadata.generated_at).toLocaleDateString()}

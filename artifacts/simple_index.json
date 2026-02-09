@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "total_documents": 20,
+    "source": "themes.json quotes"
+  },
+  "documents": [
+    {
+      "id": "1_0",
+      "text": "More parking spots near halls more inner on campus that are ether pay to park or free",
+      "theme_label": "Closer Parking",
+      "theme_id": 1
+    },
+    {
+      "id": "1_1",
+      "text": "More parking spots close to campus ",
+      "theme_label": "Closer Parking",
+      "theme_id": 1
+    },
+    {
+      "id": "1_2",
+      "text": "Building more spots on campus so I don\u2019t have to park so far away from everything and walk a decent bit to class",
+      "theme_label": "Closer Parking",
+      "theme_id": 1
+    },
+    {
+      "id": "1_3",
+      "text": "More parking close to campus",
+      "theme_label": "Closer Parking",
+      "theme_id": 1
+    },
+    {
+      "id": "1_4",
+      "text": "more allowance of parking on campus - not huge specified lots but lots that allow more types of passes to park",
+      "theme_label": "Closer Parking",
+      "theme_id": 1
+    },
+    {
+      "id": "0_0",
+      "text": "More parking spots and less expensive rates",
+      "theme_label": "Add More Capacity",
+      "theme_id": 0
+    },
+    {
+      "id": "0_1",
+      "text": "More parking spots. ",
+      "theme_label": "Add More Capacity",
+      "theme_id": 0
+    },
+    {
+      "id": "0_2",
+      "text": "Add more parking. Allow people to park in areas that are more convenient to them. ",
+      "theme_label": "Add More Capacity",
+      "theme_id": 0
+    },
+    {
+      "id": "0_3",
+      "text": "More parking spots",
+      "theme_label": "Add More Capacity",
+      "theme_id": 0
+    },
+    {
+      "id": "0_4",
+      "text": "More parking spots",
+      "theme_label": "Add More Capacity",
+      "theme_id": 0
+    },
+    {
+      "id": "3_0",
+      "text": "more spots and less expensive ",
+      "theme_label": "Lower Costs",
+      "theme_id": 3
+    },
+    {
+      "id": "3_1",
+      "text": "more spots and easier availability ",
+      "theme_label": "Lower Costs",
+      "theme_id": 3
+    },
+    {
+      "id": "3_2",
+      "text": "More spots. There is plenty of room ",
+      "theme_label": "Lower Costs",
+      "theme_id": 3
+    },
+    {
+      "id": "3_3",
+      "text": "more spots better location ",
+      "theme_label": "Lower Costs",
+      "theme_id": 3
+    },
+    {
+      "id": "3_4",
+      "text": "More spots that cost less",
+      "theme_label": "Lower Costs",
+      "theme_id": 3
+    },
+    {
+      "id": "2_0",
+      "text": "Express bus routes with fewer stops for communters. Waiting 20 minutes for a bus to take you from parking to class is less efficient than just walking.",
+      "theme_label": "Improve Transit",
+      "theme_id": 2
+    },
+    {
+      "id": "2_1",
+      "text": "Improve the Campus Ride - I would use it consistently around campus if it had consistent, predictable arrival and departure times. For example, the East Edge bus is extremely popular with students. It is popular because students know where it will take them, when it will arrive, and when it will get them to their destination. These factors allow students to plan public transportation into their routine. The on-campus routes, on the other hand, have no set schedule, so it is impossible to actually plan to use them unless you have an extra 3 hours in your day to wait around for one and wonder when it will get to you.",
+      "theme_label": "Improve Transit",
+      "theme_id": 2
+    },
+    {
+      "id": "2_2",
+      "text": "Lowering cost. It is ridiculous as a student to pay $400 extra for a spot when we already pay tuition plus a multitude of other fees. ",
+      "theme_label": "Improve Transit",
+      "theme_id": 2
+    },
+    {
+      "id": "2_3",
+      "text": "Make bus routes more spaced out, at regular intervals. Sometimes there's a wave of similar bus routes, meaning that you either wait a little bit of time for a bus or a very long time.",
+      "theme_label": "Improve Transit",
+      "theme_id": 2
+    },
+    {
+      "id": "2_4",
+      "text": "We need to adapt to common transit features like other campuses around the US. Passio go is too confusing to the average student. If students could track the busses and learn how to get somewhere just using maps, I\u2019m confident that Crimson Ride usage would greatly increase. ",
+      "theme_label": "Improve Transit",
+      "theme_id": 2
+    }
+  ]
+}
