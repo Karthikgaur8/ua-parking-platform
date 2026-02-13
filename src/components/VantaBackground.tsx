@@ -30,15 +30,15 @@ export default function VantaBackground() {
             return;
         }
 
-        // Check that VANTA.BIRDS is ready
-        if (!win.VANTA || !win.VANTA.BIRDS) {
-            console.log('VANTA.BIRDS not ready, waiting...');
+        // Check that VANTA.NET is ready
+        if (!win.VANTA || !win.VANTA.NET) {
+            console.log('VANTA.NET not ready, waiting...');
             return;
         }
 
         try {
-            console.log('Initializing VANTA.BIRDS...');
-            const effect = win.VANTA.BIRDS({
+            console.log('Initializing VANTA.NET...');
+            const effect = win.VANTA.NET({
                 el: vantaRef.current,
                 mouseControls: true,
                 touchControls: true,
@@ -47,23 +47,17 @@ export default function VantaBackground() {
                 minWidth: 200.00,
                 scale: 1.00,
                 scaleMobile: 1.00,
-                // Colors - blue/pink theme
-                backgroundColor: 0x030712,   // gray-950 (almost black)
-                color1: 0x3b82f6,            // Blue
-                color2: 0xec4899,            // Pink
-                colorMode: 'lerpGradient',
-                birdSize: 1.40,              // Medium birds
-                wingSpan: 30.00,             // Normal wingspan
-                speedLimit: 5.00,            // Slightly faster
-                separation: 30.00,           // Normal separation
-                alignment: 35.00,            // Higher alignment
-                cohesion: 35.00,             // Moderate cohesion
-                quantity: 8.00,              // More birds!
+                color: 0xff3f81,              // Pink
+                backgroundColor: 0x23153c,    // Dark purple
+                points: 10.00,
+                maxDistance: 20.00,
+                spacing: 15.00,
+                showDots: true,
             });
-            console.log('VANTA.BIRDS initialized successfully');
+            console.log('VANTA.NET initialized successfully');
             setVantaEffect(effect);
         } catch (error) {
-            console.error('Failed to initialize VANTA.BIRDS:', error);
+            console.error('Failed to initialize VANTA.NET:', error);
             setHasError(true);
         }
     }, [vantaEffect]);
@@ -76,7 +70,7 @@ export default function VantaBackground() {
         if (win.THREE && win.THREE.PerspectiveCamera) {
             setThreeLoaded(true);
         }
-        if (win.VANTA && win.VANTA.BIRDS) {
+        if (win.VANTA && win.VANTA.NET) {
             setVantaLoaded(true);
         }
     }, []);
@@ -105,7 +99,7 @@ export default function VantaBackground() {
     };
 
     const handleVantaLoad = () => {
-        console.log('VANTA.BIRDS loaded');
+        console.log('VANTA.NET loaded');
         setVantaLoaded(true);
     };
 
@@ -123,9 +117,9 @@ export default function VantaBackground() {
                 onLoad={handleThreeLoad}
                 onError={handleScriptError}
             />
-            {/* Load Vanta BIRDS */}
+            {/* Load Vanta NET */}
             <Script
-                src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"
+                src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"
                 strategy="afterInteractive"
                 onLoad={handleVantaLoad}
                 onError={handleScriptError}
