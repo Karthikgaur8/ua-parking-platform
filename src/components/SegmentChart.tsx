@@ -64,21 +64,22 @@ export function SegmentChart({ title, segments, metric, metricLabel, order }: Se
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="rounded-2xl border border-gray-800 bg-gray-900/50 p-6 backdrop-blur-sm"
+            className="rounded-2xl border border-gray-800 bg-gray-900/50 p-4 sm:p-6 backdrop-blur-sm"
         >
-            <h3 className="text-lg font-semibold text-white mb-4">{title}</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-4">{title}</h3>
 
-            <div className="h-[250px]">
+            <div className="h-[200px] sm:h-[250px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                    <BarChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                         <XAxis
                             dataKey="name"
                             stroke="#6b7280"
-                            fontSize={11}
-                            angle={-30}
+                            fontSize={10}
+                            angle={-45}
                             textAnchor="end"
-                            height={60}
+                            height={65}
                             tickLine={false}
+                            interval={0}
                         />
                         <YAxis stroke="#6b7280" fontSize={12} />
                         <Tooltip

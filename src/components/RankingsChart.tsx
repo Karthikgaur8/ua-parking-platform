@@ -35,29 +35,29 @@ export function RankingsChart({ rankings }: RankingsChartProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="rounded-2xl border border-gray-800 bg-gray-900/50 p-6 backdrop-blur-sm"
+            className="rounded-2xl border border-gray-800 bg-gray-900/50 p-4 sm:p-6 backdrop-blur-sm"
         >
-            <h3 className="text-lg font-semibold text-white mb-4">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-2 sm:mb-4">
                 Challenge Priority Rankings
             </h3>
-            <p className="text-sm text-gray-400 mb-6">
+            <p className="text-xs sm:text-sm text-gray-400 mb-4 sm:mb-6">
                 Weighted score: 3 pts for Rank 1, 2 pts for Rank 2, 1 pt for Rank 3
             </p>
 
-            <div className="h-[300px]">
+            <div className="h-[250px] sm:h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                         data={data}
                         layout="vertical"
-                        margin={{ top: 0, right: 30, left: 0, bottom: 0 }}
+                        margin={{ top: 0, right: 20, left: 0, bottom: 0 }}
                     >
-                        <XAxis type="number" stroke="#6b7280" fontSize={12} />
+                        <XAxis type="number" stroke="#6b7280" fontSize={11} />
                         <YAxis
                             type="category"
                             dataKey="name"
                             stroke="#6b7280"
-                            fontSize={12}
-                            width={140}
+                            fontSize={10}
+                            width={100}
                             tickLine={false}
                         />
                         <Tooltip

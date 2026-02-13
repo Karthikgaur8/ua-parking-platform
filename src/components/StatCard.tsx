@@ -32,19 +32,19 @@ export function StatCard({ title, value, subtitle, color = 'blue' }: StatCardPro
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.4, scale: { type: 'spring', stiffness: 300, damping: 15 } }}
             className={`
-        relative overflow-hidden rounded-2xl border p-6
+        relative overflow-hidden rounded-2xl border p-4 sm:p-6
         bg-gradient-to-br ${colorClasses[color]}
         backdrop-blur-sm cursor-pointer
       `}
         >
             <div className="relative z-10">
-                <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-2">
+                <p className="text-xs sm:text-sm font-medium text-gray-400 uppercase tracking-wider mb-1 sm:mb-2">
                     {title}
                 </p>
-                <p className={`text-4xl font-bold ${textColors[color]} mb-1`}>
+                <p className={`text-3xl sm:text-4xl font-bold ${textColors[color]} mb-1`}>
                     {value}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs sm:text-sm text-gray-500">
                     {subtitle}
                 </p>
             </div>

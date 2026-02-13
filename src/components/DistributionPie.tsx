@@ -39,11 +39,11 @@ export function DistributionPie({ title, data, colorScheme = 'default' }: Distri
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="rounded-2xl border border-gray-800 bg-gray-900/50 p-6 backdrop-blur-sm"
+            className="rounded-2xl border border-gray-800 bg-gray-900/50 p-4 sm:p-6 backdrop-blur-sm"
         >
-            <h3 className="text-lg font-semibold text-white mb-4 text-center">{title}</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-4 text-center">{title}</h3>
 
-            <div className="h-[320px]">
+            <div className="h-[280px] sm:h-[320px]">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                         <Pie

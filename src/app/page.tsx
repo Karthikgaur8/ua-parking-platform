@@ -17,7 +17,7 @@ export default async function Dashboard() {
     <main className="min-h-screen text-white relative">
       <NavHeader subtitle={`Survey Dashboard • ${metrics.total_responses.completed} responses`} />
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Hero Stats */}
         <section className="mb-12">
           <h2 className="text-lg font-semibold text-gray-300 mb-6 uppercase tracking-wider">
@@ -106,12 +106,12 @@ export default async function Dashboard() {
 
         {/* Footer */}
         <footer className="border-t border-gray-800 pt-8 mt-12">
-          <div className="flex items-center justify-between text-sm text-gray-500">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-sm text-gray-500">
             <p>
-              Data source: Qualtrics Survey • PII scrubbed • {data.metadata.total_rows} responses processed
+              Data source: Qualtrics Survey • PII scrubbed
             </p>
             <p>
-              Built with Next.js + Recharts
+              {data.metadata.total_rows} responses • Built with Next.js + Recharts
             </p>
           </div>
         </footer>
