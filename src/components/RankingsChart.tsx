@@ -23,7 +23,7 @@ const COLORS = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6'
 
 export function RankingsChart({ rankings }: RankingsChartProps) {
     const data = Object.entries(rankings).map(([name, stats], index) => ({
-        name: name.length > 20 ? name.substring(0, 18) + '...' : name,
+        name: name.length > 25 ? name.substring(0, 23) + '...' : name,
         fullName: name,
         score: stats.weighted_score,
         top3Pct: stats.top3_pct,
@@ -51,14 +51,15 @@ export function RankingsChart({ rankings }: RankingsChartProps) {
                         layout="vertical"
                         margin={{ top: 0, right: 20, left: 0, bottom: 0 }}
                     >
-                        <XAxis type="number" stroke="#6b7280" fontSize={11} />
+                        <XAxis type="number" stroke="#9ca3af" fontSize={11} tick={{ fill: '#e5e7eb' }} />
                         <YAxis
                             type="category"
                             dataKey="name"
-                            stroke="#6b7280"
-                            fontSize={10}
-                            width={100}
+                            stroke="#9ca3af"
+                            fontSize={11}
+                            width={130}
                             tickLine={false}
+                            tick={{ fill: '#e5e7eb' }}
                         />
                         <Tooltip
                             contentStyle={{

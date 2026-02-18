@@ -68,20 +68,22 @@ export function SegmentChart({ title, segments, metric, metricLabel, order }: Se
         >
             <h3 className="text-base sm:text-lg font-semibold text-white mb-4">{title}</h3>
 
-            <div className="h-[200px] sm:h-[250px]">
+            <div className="h-[280px] sm:h-[320px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                    <BarChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
                         <XAxis
                             dataKey="name"
-                            stroke="#6b7280"
-                            fontSize={10}
-                            angle={-45}
+                            stroke="#9ca3af"
+                            fontSize={11}
+                            angle={-35}
                             textAnchor="end"
-                            height={65}
+                            height={100}
                             tickLine={false}
                             interval={0}
+                            tick={{ fill: '#e5e7eb', dy: 10 }}
+                            tickMargin={10}
                         />
-                        <YAxis stroke="#6b7280" fontSize={12} />
+                        <YAxis stroke="#9ca3af" fontSize={12} tick={{ fill: '#e5e7eb' }} />
                         <Tooltip
                             contentStyle={{
                                 backgroundColor: '#1f2937',
