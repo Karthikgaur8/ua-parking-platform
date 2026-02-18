@@ -35,11 +35,10 @@ Unsupervised NLP pipeline that automatically categorizes 289 free-text responses
 - **LLM-enhanced labeling** with exponential backoff + intelligent fallback
 - **Representative quote extraction** (nearest to cluster centroid)
 
-### 🔍 Evidence Engine
-Interactive theme browser with:
-- Searchable quote database
-- Segment breakdown by arrival time and transport mode
-- Skip rate correlation per theme
+### � Keyword-Based Survey Chat
+- Chat interface powered by keyword matching on clustered quotes
+- Gemini-generated responses grounded in actual student responses
+- Not true RAG — uses keyword relevance scoring, not vector retrieval
 
 ---
 
@@ -122,13 +121,20 @@ npm run dev
 ### Run the Pipeline
 
 ```bash
-# 1. Clean survey data (removes PII)
-python scripts/scrub_pii.py --input data/raw/survey.xlsx --output data/clean.csv
+# One-command refresh (recommended):
+python scripts/refresh_data.py
 
-# 2. Compute metrics
-python scripts/compute_metrics.py
+# This runs all 3 steps automatically:
+#   1. Cleans raw XLSX → data/clean.csv
+#   2. Builds metrics  → artifacts/metrics.json
+#   3. Builds themes   → artifacts/themes.json (calls Gemini API)
 
-# 3. Build AI-powered themes
+# Quick refresh (skip AI theme re-clustering):
+python scripts/refresh_data.py --skip-themes
+
+# Or run steps individually:
+python scripts/load_qualtrics.py -i data/raw/survey.xlsx -o data/clean.csv
+python scripts/build_rollups.py -i data/clean.csv -o artifacts/
 python scripts/build_themes.py -i data/clean.csv -o artifacts/themes.json
 ```
 
@@ -141,29 +147,32 @@ ua-parking-platform/
 ├── src/
 │   ├── app/
 │   │   ├── page.tsx              # Executive dashboard
+│   │   ├── chat/page.tsx         # RAG chat interface
 │   │   ├── evidence/page.tsx     # Theme explorer
-│   │   └── api/evidence/         # RESTful evidence API
+│   │   └── api/
+│   │       ├── chat/route.ts     # RAG chat API (Gemini)
+│   │       └── evidence/route.ts # Evidence API
 │   ├── components/
 │   │   ├── StatCard.tsx          # Animated metric cards
 │   │   ├── RankingsChart.tsx     # Weighted priority visualization
 │   │   ├── SegmentChart.tsx      # Cross-tab breakdown
 │   │   ├── DistributionPie.tsx   # Category distributions
+│   │   ├── ChatInterface.tsx     # AI chat component
 │   │   └── ThemeExplorer.tsx     # Interactive theme browser
 │   └── lib/
 │       └── data.ts               # Data loading utilities
 ├── scripts/
-│   ├── scrub_pii.py              # PII removal + anonymization
-│   ├── compute_metrics.py        # Aggregations with n/N format
-│   ├── build_themes.py           # AI clustering pipeline
-│   └── semantic_search.py        # Quote search utility
+│   ├── refresh_data.py           # ⭐ One-command pipeline orchestrator
+│   ├── load_qualtrics.py         # PII removal + anonymization
+│   ├── build_rollups.py          # Metrics with n/N format
+│   └── build_themes.py           # AI clustering pipeline
 ├── artifacts/
 │   ├── metrics.json              # Precomputed dashboard data
 │   └── themes.json               # AI-generated theme clusters
 ├── data/
 │   ├── clean.csv                 # Anonymized survey responses
 │   └── raw/                      # Original files (gitignored)
-└── docs/
-    └── data_contract.md          # Schema + PII handling rules
+└── .env.example                  # Environment template
 ```
 
 ---
@@ -214,10 +223,11 @@ npm run dev
 
 - [x] Phase 0: Data pipeline + PII scrubbing
 - [x] Phase 1: Interactive dashboard
-- [x] Phase 2: AI theme clustering
-- [ ] Phase 3: RAG conversational interface
-- [ ] Phase 3: PDF brief generator
-- [ ] Phase 3: Scenario sensitivity analyzer
+- [x] Phase 2: AI theme clustering + Evidence Engine
+- [x] Phase 3: Keyword-based survey chat
+- [ ] Phase 3.5: True RAG (vector embeddings for retrieval)
+- [ ] Phase 4: PDF brief generator
+- [ ] Phase 5: Qualtrics API live fetch (pending API access)
 
 ---
 
