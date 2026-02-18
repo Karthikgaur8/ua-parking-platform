@@ -204,15 +204,19 @@ def compute_segments(df: pd.DataFrame) -> dict:
     segments = {}
     
     # First, compute PFS for each response
+    # Vectorized PFS computation (no row-by-row .apply)
     df = df.copy()
-    df['pfs'] = df.apply(
-        lambda row: compute_pfs(
-            row.get('ease', ''),
-            row.get('minutes_searching', np.nan),
-            row.get('skipped_class', False)
-        ),
-        axis=1
+    difficulty_map = {
+        "Very Easy": 0.0, "Easy": 0.25, "Neutral": 0.50,
+        "Difficult": 0.75, "Very Difficult": 1.0
+    }
+    df['_diff_score'] = df['ease'].map(difficulty_map).fillna(0.5)
+    df['_minutes_norm'] = np.clip(
+        pd.to_numeric(df['minutes_searching'], errors='coerce').fillna(22.5) / 45.0,
+        0.0, 1.0
     )
+    df['_skip_score'] = df['skipped_class'].fillna(False).astype(float)
+    df['pfs'] = 0.35 * df['_diff_score'] + 0.35 * df['_minutes_norm'] + 0.30 * df['_skip_score']
     
     # By arrival time
     if 'arrival_time' in df.columns:
@@ -220,11 +224,13 @@ def compute_segments(df: pd.DataFrame) -> dict:
         for arrival, group in df.groupby('arrival_time'):
             if pd.isna(arrival):
                 continue
+            skip_col = group['skipped_class'].fillna(False) if 'skipped_class' in group else pd.Series(dtype=float)
+            minutes_col = pd.to_numeric(group['minutes_searching'], errors='coerce')
             arrival_segments[arrival] = {
                 'n': int(len(group)),
                 'avg_pfs': round(group['pfs'].mean(), 3),
-                'skip_rate': round(group['skipped_class'].mean() * 100, 1) if 'skipped_class' in group else None,
-                'avg_minutes': round(pd.to_numeric(group['minutes_searching'], errors='coerce').mean(), 1)
+                'skip_rate': round(skip_col.mean() * 100, 1) if len(skip_col) > 0 else None,
+                'avg_minutes': round(minutes_col.mean(), 1) if minutes_col.notna().any() else None
             }
         segments['by_arrival_time'] = arrival_segments
     
@@ -234,10 +240,11 @@ def compute_segments(df: pd.DataFrame) -> dict:
         for mode, group in df.groupby('mode'):
             if pd.isna(mode):
                 continue
+            skip_col = group['skipped_class'].fillna(False) if 'skipped_class' in group else pd.Series(dtype=float)
             mode_segments[mode] = {
                 'n': int(len(group)),
                 'avg_pfs': round(group['pfs'].mean(), 3),
-                'skip_rate': round(group['skipped_class'].mean() * 100, 1) if 'skipped_class' in group else None
+                'skip_rate': round(skip_col.mean() * 100, 1) if len(skip_col) > 0 else None
             }
         segments['by_mode'] = mode_segments
     
@@ -247,10 +254,11 @@ def compute_segments(df: pd.DataFrame) -> dict:
         for freq, group in df.groupby('frequency'):
             if pd.isna(freq):
                 continue
+            skip_col = group['skipped_class'].fillna(False) if 'skipped_class' in group else pd.Series(dtype=float)
             freq_segments[freq] = {
                 'n': int(len(group)),
                 'avg_pfs': round(group['pfs'].mean(), 3),
-                'skip_rate': round(group['skipped_class'].mean() * 100, 1) if 'skipped_class' in group else None
+                'skip_rate': round(skip_col.mean() * 100, 1) if len(skip_col) > 0 else None
             }
         segments['by_frequency'] = freq_segments
     

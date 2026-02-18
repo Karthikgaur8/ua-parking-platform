@@ -46,21 +46,30 @@ interface Message {
     content: string;
 }
 
-// Load themes data at startup
+// Load themes data with file-stat-based cache invalidation
 let themesData: ThemesData | null = null;
+let themesLastModified: number = 0;
 
 function loadThemesData(): ThemesData {
-    if (themesData) return themesData;
-
     const themesPath = path.join(process.cwd(), 'artifacts', 'themes.json');
 
     if (!fs.existsSync(themesPath)) {
         throw new Error('Themes data not found. Run: python scripts/build_themes.py');
     }
 
+    // Check if file has been modified since last load
+    const stat = fs.statSync(themesPath);
+    const mtime = stat.mtimeMs;
+
+    if (themesData && mtime === themesLastModified) {
+        return themesData;  // Cache hit — file unchanged
+    }
+
+    // Cache miss or file changed — reload
     const data = fs.readFileSync(themesPath, 'utf-8');
     themesData = JSON.parse(data);
-    console.log(`Loaded ${themesData!.themes.length} themes for RAG`);
+    themesLastModified = mtime;
+    console.log(`Loaded ${themesData!.themes.length} themes for RAG (mtime: ${new Date(mtime).toISOString()})`);
     return themesData!;
 }
 

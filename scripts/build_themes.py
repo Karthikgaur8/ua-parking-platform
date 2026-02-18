@@ -57,7 +57,7 @@ genai.configure(api_key=GEMINI_API_KEY)
 
 
 def load_text_data(csv_path: Path) -> pd.DataFrame:
-    """Load and filter text responses."""
+    """Load and filter text responses (vectorized for performance)."""
     print(f"Loading {csv_path}...")
     # Try UTF-8 first, fall back to latin-1 for Windows files
     try:
@@ -65,57 +65,77 @@ def load_text_data(csv_path: Path) -> pd.DataFrame:
     except UnicodeDecodeError:
         df = pd.read_csv(csv_path, encoding='latin-1')
     
-    # Combine text columns
-    texts = []
-    for _, row in df.iterrows():
-        # Primary: Q11 suggestions
-        suggestion = str(row.get('suggestion', '')) if pd.notna(row.get('suggestion')) else ''
-        # Secondary: Q7B experience
-        experience = str(row.get('skip_experience', '')) if pd.notna(row.get('skip_experience')) else ''
-        
-        # Prefer suggestion, fall back to experience
-        text = suggestion if len(suggestion) > 15 else experience
-        
-        if len(text) > 15:
-            texts.append({
-                'id': row.get('id', ''),
-                'text': text,
-                'source': 'suggestion' if len(suggestion) > 15 else 'experience',
-                'arrival_time': row.get('arrival_time', ''),
-                'mode': row.get('mode', ''),
-                'frequency': row.get('frequency', ''),
-                'skipped_class': row.get('skipped_class', False),
-            })
+    # Vectorized text extraction — no iterrows()
+    suggestion = df.get('suggestion', pd.Series(dtype=str)).fillna('').astype(str)
+    experience = df.get('skip_experience', pd.Series(dtype=str)).fillna('').astype(str)
     
-    result = pd.DataFrame(texts)
+    # Prefer suggestion if > 15 chars, else fall back to experience
+    use_suggestion = suggestion.str.len() > 15
+    text = suggestion.where(use_suggestion, experience)
+    source = pd.Series('suggestion', index=df.index).where(use_suggestion, 'experience')
+    
+    # Filter to substantive responses
+    mask = text.str.len() > 15
+    
+    result = pd.DataFrame({
+        'id': df.get('id', pd.Series(dtype=str)),
+        'text': text,
+        'source': source,
+        'arrival_time': df.get('arrival_time', pd.Series(dtype=str)).fillna(''),
+        'mode': df.get('mode', pd.Series(dtype=str)).fillna(''),
+        'frequency': df.get('frequency', pd.Series(dtype=str)).fillna(''),
+        'skipped_class': df.get('skipped_class', pd.Series(dtype=bool)).fillna(False),
+    })[mask].reset_index(drop=True)
+    
     print(f"  Found {len(result)} substantive text responses")
     return result
 
 
-def embed_texts(texts: list[str], batch_size: int = 20) -> np.ndarray:
-    """Embed texts using Gemini."""
-    print(f"Embedding {len(texts)} texts...")
+def embed_texts(texts: list[str], batch_size: int = 100) -> np.ndarray:
+    """Embed texts using Gemini batch API (sends list per call, not 1-at-a-time)."""
+    print(f"Embedding {len(texts)} texts in batches of {batch_size}...")
     embeddings = []
+    total_batches = (len(texts) - 1) // batch_size + 1
     
     for i in range(0, len(texts), batch_size):
         batch = texts[i:i + batch_size]
-        print(f"  Batch {i // batch_size + 1}/{(len(texts) - 1) // batch_size + 1}")
+        batch_num = i // batch_size + 1
+        print(f"  Batch {batch_num}/{total_batches} ({len(batch)} texts)")
         
-        for text in batch:
+        # Retry logic for each batch
+        for attempt in range(3):
             try:
                 result = genai.embed_content(
                     model="models/text-embedding-004",
-                    content=text,
+                    content=batch,
                     task_type="clustering"
                 )
-                embeddings.append(result['embedding'])
+                embeddings.extend(result['embedding'])
+                break
             except Exception as e:
-                print(f"    Warning: Failed to embed text: {e}")
-                # Use zero vector as fallback
-                embeddings.append([0.0] * 768)
-            
-            # Minimal delay for paid tier (adjust if needed)
-            time.sleep(0.02)
+                error_msg = str(e).lower()
+                if attempt < 2 and ('rate' in error_msg or '429' in error_msg or 'quota' in error_msg):
+                    delay = 2 ** (attempt + 1)
+                    print(f"    Rate limited, waiting {delay}s (attempt {attempt + 1}/3)...")
+                    time.sleep(delay)
+                else:
+                    print(f"    Warning: Batch {batch_num} failed: {e}")
+                    # Fall back to individual embedding for this batch
+                    for text in batch:
+                        try:
+                            single = genai.embed_content(
+                                model="models/text-embedding-004",
+                                content=text,
+                                task_type="clustering"
+                            )
+                            embeddings.append(single['embedding'])
+                        except Exception:
+                            embeddings.append([0.0] * 768)
+                        time.sleep(0.05)
+                    break
+        
+        # Small delay between batches to stay within rate limits
+        time.sleep(0.1)
     
     return np.array(embeddings)
 
@@ -161,9 +181,9 @@ Comments:
 Reply with ONLY the label, nothing else. Examples: "Cost Concerns", "Need More Spots", "Distance Issues"
 """
     
-    # Single attempt for paid tier (no retries needed)
-    max_retries = 1
-    base_delay = 0.5  # seconds (minimal)
+    # 3 retries with exponential backoff for stability at scale
+    max_retries = 3
+    base_delay = 1.0  # seconds
     
     for attempt in range(max_retries):
         try:
@@ -265,9 +285,9 @@ Distance to Class
 Bus Route Issues
 """
     
-    # Single attempt for paid tier
-    max_retries = 1
-    base_delay = 0.5
+    # 3 retries with exponential backoff for stability at scale
+    max_retries = 3
+    base_delay = 1.0
     
     for attempt in range(max_retries):
         try:
