@@ -28,14 +28,18 @@ from dotenv import load_dotenv
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
+# Fix Windows terminal encoding for emoji/Unicode
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
 # Load environment variables (handle Windows encoding issues)
 from pathlib import Path
 script_dir = Path(__file__).parent.parent
 env_file = script_dir / '.env.local'
 if env_file.exists():
-    # Read with explicit encoding to avoid Windows issues
+    # Read with utf-8-sig to handle BOM character that Windows editors often add
     try:
-        content = env_file.read_text(encoding='utf-8')
+        content = env_file.read_text(encoding='utf-8-sig')
     except UnicodeDecodeError:
         content = env_file.read_text(encoding='utf-16')
     for line in content.strip().split('\n'):
@@ -92,43 +96,69 @@ def load_text_data(csv_path: Path) -> pd.DataFrame:
 
 
 def embed_texts(texts: list[str], batch_size: int = 100) -> np.ndarray:
-    """Embed texts using Gemini batch API (sends list per call, not 1-at-a-time)."""
+    """Embed texts using Gemini REST API directly (avoids deprecated SDK issues)."""
+    import requests as req
+    
     print(f"Embedding {len(texts)} texts in batches of {batch_size}...")
     embeddings = []
     total_batches = (len(texts) - 1) // batch_size + 1
+    api_key = GEMINI_API_KEY
+    embed_model = "gemini-embedding-001"
     
     for i in range(0, len(texts), batch_size):
         batch = texts[i:i + batch_size]
         batch_num = i // batch_size + 1
         print(f"  Batch {batch_num}/{total_batches} ({len(batch)} texts)")
         
+        # Use batchEmbedContents REST endpoint
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{embed_model}:batchEmbedContents?key={api_key}"
+        payload = {
+            "requests": [
+                {
+                    "model": f"models/{embed_model}",
+                    "content": {"parts": [{"text": text}]},
+                    "taskType": "CLUSTERING"
+                }
+                for text in batch
+            ]
+        }
+        
         # Retry logic for each batch
         for attempt in range(3):
             try:
-                result = genai.embed_content(
-                    model="models/text-embedding-004",
-                    content=batch,
-                    task_type="clustering"
-                )
-                embeddings.extend(result['embedding'])
-                break
+                resp = req.post(url, json=payload, timeout=60)
+                if resp.status_code == 200:
+                    data = resp.json()
+                    for emb in data["embeddings"]:
+                        embeddings.append(emb["values"])
+                    break
+                elif resp.status_code == 429:
+                    delay = 2 ** (attempt + 1)
+                    print(f"    Rate limited, waiting {delay}s (attempt {attempt + 1}/3)...")
+                    time.sleep(delay)
+                else:
+                    raise Exception(f"{resp.status_code}: {resp.text[:200]}")
             except Exception as e:
-                error_msg = str(e).lower()
-                if attempt < 2 and ('rate' in error_msg or '429' in error_msg or 'quota' in error_msg):
+                if attempt < 2 and '429' in str(e):
                     delay = 2 ** (attempt + 1)
                     print(f"    Rate limited, waiting {delay}s (attempt {attempt + 1}/3)...")
                     time.sleep(delay)
                 else:
                     print(f"    Warning: Batch {batch_num} failed: {e}")
                     # Fall back to individual embedding for this batch
+                    single_url = f"https://generativelanguage.googleapis.com/v1beta/models/{embed_model}:embedContent?key={api_key}"
                     for text in batch:
                         try:
-                            single = genai.embed_content(
-                                model="models/text-embedding-004",
-                                content=text,
-                                task_type="clustering"
-                            )
-                            embeddings.append(single['embedding'])
+                            single_payload = {
+                                "model": f"models/{embed_model}",
+                                "content": {"parts": [{"text": text}]},
+                                "taskType": "CLUSTERING"
+                            }
+                            r = req.post(single_url, json=single_payload, timeout=30)
+                            if r.status_code == 200:
+                                embeddings.append(r.json()["embedding"]["values"])
+                            else:
+                                embeddings.append([0.0] * 768)
                         except Exception:
                             embeddings.append([0.0] * 768)
                         time.sleep(0.05)
@@ -343,16 +373,61 @@ def get_representative_quotes(
     texts: list[str],
     embeddings: np.ndarray,
     centroid: np.ndarray,
-    n_quotes: int = 5
+    n_quotes: int = 5,
+    theme_label: str = ""
 ) -> list[str]:
-    """Get quotes closest to cluster centroid."""
-    # Calculate distances to centroid
+    """Get representative quotes using LLM curation.
+    
+    1. Takes top 20 candidates by centroid distance
+    2. Asks Gemini to pick the best n_quotes that represent the theme
+    3. Falls back to pure centroid if LLM fails
+    """
+    import requests as req
+    
+    # Step 1: Get candidate pool (top 20 nearest centroid)
+    n_candidates = min(20, len(texts))
     distances = np.linalg.norm(embeddings - centroid, axis=1)
+    closest_indices = np.argsort(distances)[:n_candidates]
+    candidates = [texts[i] for i in closest_indices]
     
-    # Get indices of closest texts
-    closest_indices = np.argsort(distances)[:n_quotes]
+    # If we have fewer candidates than needed, return all
+    if len(candidates) <= n_quotes:
+        return candidates
     
-    return [texts[i] for i in closest_indices]
+    # Step 2: Ask Gemini to pick the best quotes
+    if not theme_label or not GEMINI_API_KEY:
+        return candidates[:n_quotes]
+    
+    numbered = "\n".join(f"{i+1}. \"{q}\"" for i, q in enumerate(candidates))
+    prompt = f"""You are curating representative quotes for a survey theme.
+
+Theme: "{theme_label}"
+
+Here are {len(candidates)} candidate quotes from this theme cluster. Pick the {n_quotes} that BEST represent this theme — they should clearly and directly relate to "{theme_label}".
+
+Candidates:
+{numbered}
+
+Reply with ONLY the numbers of your top {n_quotes} picks, separated by commas. Example: 1,5,8,12,3"""
+
+    try:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
+        payload = {"contents": [{"parts": [{"text": prompt}]}]}
+        resp = req.post(url, json=payload, timeout=30)
+        
+        if resp.status_code == 200:
+            text = resp.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+            # Parse comma-separated numbers
+            nums = [int(x.strip()) for x in text.replace('\n', ',').split(',') if x.strip().isdigit()]
+            # Convert 1-indexed to 0-indexed, filter valid
+            selected = [candidates[n-1] for n in nums if 1 <= n <= len(candidates)]
+            if len(selected) >= n_quotes:
+                return selected[:n_quotes]
+    except Exception as e:
+        print(f"    LLM quote curation failed: {e}, using centroid fallback")
+    
+    # Fallback: return centroid-nearest
+    return candidates[:n_quotes]
 
 
 def build_themes(
@@ -395,12 +470,13 @@ def build_themes(
         label = all_labels[i] if i < len(all_labels) else f"Theme {i+1}"
         print(f"    Label: {label}")
         
-        # Get representative quotes
+        # Get representative quotes (LLM-curated)
         quotes = get_representative_quotes(
             cluster['texts'],
             cluster['embeddings'],
             kmeans.cluster_centers_[cluster['id']],
-            n_quotes
+            n_quotes,
+            theme_label=label
         )
         
         # Calculate segment breakdown

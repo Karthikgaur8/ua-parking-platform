@@ -38,19 +38,27 @@ interface ThemesData {
     themes: Theme[];
 }
 
-// Cache themes in memory
+// Cache themes in memory with file-stat invalidation
 let cachedThemes: ThemesData | null = null;
+let themesLastModified: number = 0;
 
 async function loadThemes(): Promise<ThemesData> {
-    if (cachedThemes) {
-        return cachedThemes;
-    }
-
     const themesPath = path.join(process.cwd(), 'artifacts', 'themes.json');
 
     try {
+        // Check if file has changed since last load
+        const { statSync } = await import('fs');
+        const stat = statSync(themesPath);
+        const mtime = stat.mtimeMs;
+
+        if (cachedThemes && mtime === themesLastModified) {
+            return cachedThemes;
+        }
+
+        // File changed or first load — reload
         const content = await fs.readFile(themesPath, 'utf-8');
         cachedThemes = JSON.parse(content);
+        themesLastModified = mtime;
         return cachedThemes!;
     } catch (error) {
         // Return mock data for development

@@ -1,6 +1,6 @@
 # 🅿️ UA Parking Intelligence Platform
 
-> **Full-stack analytics platform** transforming raw survey responses into actionable insights using AI-powered theme clustering, semantic embeddings, and interactive data visualization.
+> **Full-stack analytics + ETL platform** that extracts live survey data from Qualtrics, transforms it through an automated data pipeline (PII scrubbing, metrics computation, LLM thematic analysis), and loads it into an interactive dashboard with AI-powered insights.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)](https://python.org)
@@ -13,30 +13,32 @@
 
 ### 📊 Executive Dashboard
 Real-time visualization of survey insights with **consulting-grade metrics**:
-- **Skip Rate**: 79.8% of students have skipped class due to parking (260/326)
-- **Difficulty Rate**: 80.5% report parking as difficult (265/329)
-- **Weighted Rankings**: Challenge priorities using 3×rank1 + 2×rank2 + rank3 scoring
+- **Skip Rate**: 76.9% of students have skipped class due to parking (1351/1757)
+- **Difficulty Rate**: 75.7% report parking as difficult (1335/1763)
+- **Top Challenge**: Too few spots (weighted score: 3798)
+- **1,766 responses** from Qualtrics API live fetch
 
-![Dashboard Preview](docs/Dashboard_preview.png)
+### 🧠 LLM-Powered Thematic Analysis
+Gemini 2.5 Pro performs full qualitative thematic analysis on all 1,442 free-text responses in a single pass — the same way a research consultant would, but in 48 seconds.
 
-### 🧠 AI-Powered Theme Clustering
-Unsupervised NLP pipeline that automatically categorizes 289 free-text responses:
+| Theme | Count | % |
+|-------|-------|---|
+| Increase Parking Supply | 685 | 47.5% |
+| Closer Parking Lots | 621 | 43.1% |
+| Reduce Permit Costs | 374 | 25.9% |
+| Revise Parking System & Zones | 338 | 23.4% |
+| Reform Ticketing & Enforcement | 215 | 14.9% |
+| Improve Bus System | 92 | 6.4% |
 
-| Theme | Count | Insight |
-|-------|-------|---------|
-| Closer Parking | 141 (48.8%) | Students want spots nearer to classes |
-| Add More Capacity | 88 (30.4%) | General parking shortage |
-| Lower Costs | 31 (10.7%) | Price is a barrier |
-| Improve Transit | 29 (10.0%) | Bus reliability issues |
+> Percentages exceed 100% because comments can relate to multiple themes (multi-label analysis).
 
 **Technical Implementation:**
-- **Gemini text-embedding-004** for 768-dimensional semantic vectors
-- **K-Means clustering** with silhouette score optimization (optimal k=4)
-- **LLM-enhanced labeling** with exponential backoff + intelligent fallback
-- **Representative quote extraction** (nearest to cluster centroid)
+- **Gemini 2.5 Pro** — all comments sent in a single ~45K token prompt for qualitative analysis
+- **Multi-label tagging** — each comment tagged with primary theme via Gemini 2.5 Flash for segment breakdowns
+- **Verbatim quote curation** — LLM selects 5 most representative direct quotes per theme
 
-### � Keyword-Based Survey Chat
-- Chat interface powered by keyword matching on clustered quotes
+### 💬 Keyword-Based Survey Chat
+- Chat interface powered by keyword matching on theme quotes
 - Gemini-generated responses grounded in actual student responses
 - Not true RAG — uses keyword relevance scoring, not vector retrieval
 
@@ -45,37 +47,41 @@ Unsupervised NLP pipeline that automatically categorizes 289 free-text responses
 ## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         BATCH ETL PIPELINE (Python)                         │
-│                      Run once after survey closes                           │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  Qualtrics XLSX                                                             │
-│       │                                                                     │
-│       ▼                                                                     │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐  │
-│  │ scrub_pii.py    │  │ compute_metrics │  │ build_themes.py             │  │
-│  │                 │  │                 │  │                             │  │
-│  │ • Drop emails   │──│ • PFS scores    │──│ • Gemini embeddings         │  │
-│  │ • Remove IPs    │  │ • Segment tabs  │  │ • K-Means clustering        │  │
-│  │ • Anonymize     │  │ • n/N format    │  │ • LLM auto-labeling         │  │
-│  └─────────────────┘  └─────────────────┘  └─────────────────────────────┘  │
-│           │                   │                       │                     │
-│           ▼                   ▼                       ▼                     │
-│     clean.csv          metrics.json            themes.json                  │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                    AUTOMATED ETL PIPELINE (Python)                           │
+│              One command: python scripts/refresh_data.py --fetch             │
+├───────────────────────────────────────────────────────────────────────────────┤
+│                                                                               │
+│  EXTRACT              TRANSFORM                      LOAD                     │
+│  ───────              ─────────                      ────                     │
+│  Qualtrics API        ┌──────────────┐               ┌──────────────────┐     │
+│  (3-step async  ───►  │ PII Scrub    │  ──────────►   │ artifacts/       │     │
+│   export flow)        │ • Drop PII   │               │ • metrics.json   │     │
+│                       │ • Anonymize  │               │ • themes.json    │     │
+│  survey_api.csv       │ • Filter     │               └──────────────────┘     │
+│                       └──────┬───────┘                                        │
+│                              │                                                │
+│                       ┌──────▼───────┐    ┌─────────────────────────────┐      │
+│                       │ Metrics      │    │ LLM Thematic Analysis      │      │
+│                       │ • PFS scores │    │                             │      │
+│                       │ • Rankings   │    │ • Gemini 2.5 Pro reads ALL │      │
+│                       │ • Segments   │    │   1442 comments in 1 pass  │      │
+│                       │ • n/N format │    │ • Multi-label theme tags   │      │
+│                       └──────────────┘    │ • Curated verbatim quotes  │      │
+│                                           └─────────────────────────────┘      │
+│                                                                               │
+└───────────────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         DASHBOARD (Next.js 16)                              │
-│                    Reads JSON artifacts at build time                       │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌────────────────┐   │
-│  │  StatCards   │  │  Rankings    │  │  Theme       │  │  Evidence      │   │
-│  │  (animated)  │  │  (weighted)  │  │  Explorer    │  │  API           │   │
-│  └──────────────┘  └──────────────┘  └──────────────┘  └────────────────┘   │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                         DASHBOARD (Next.js 16)                                │
+│                    Reads JSON artifacts at build/runtime                      │
+├───────────────────────────────────────────────────────────────────────────────┤
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌────────────────┐     │
+│  │  StatCards   │  │  Rankings    │  │  Evidence    │  │  Keyword       │     │
+│  │  (animated)  │  │  (weighted)  │  │  Engine      │  │  Chat          │     │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └────────────────┘     │
+└───────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -87,9 +93,9 @@ Unsupervised NLP pipeline that automatically categorizes 289 free-text responses
 | **Frontend** | Next.js 16 + React 19 | App Router, Server Components |
 | **Styling** | Tailwind CSS | Dark theme, glassmorphism effects |
 | **Charts** | Recharts | Interactive data visualization |
-| **Data Pipeline** | Python 3.10+ | ETL, embeddings, clustering |
-| **ML/NLP** | scikit-learn | K-Means, silhouette scoring |
-| **AI** | Gemini API | Embeddings + LLM labeling |
+| **ETL Pipeline** | Python 3.10+ | Extract (Qualtrics API), Transform, Load |
+| **Data Source** | Qualtrics API v3 | 3-step async export (create → poll → download) |
+| **AI/LLM** | Gemini 2.5 Pro + Flash | Thematic analysis + multi-label tagging |
 | **Database** | File-based JSON | Version-controlled artifacts |
 
 ---
@@ -121,21 +127,23 @@ npm run dev
 ### Run the Pipeline
 
 ```bash
-# One-command refresh (recommended):
-python scripts/refresh_data.py
+# 🔄 Full refresh via Qualtrics API (recommended):
+python scripts/refresh_data.py --fetch
 
-# This runs all 3 steps automatically:
-#   1. Cleans raw XLSX → data/clean.csv
-#   2. Builds metrics  → artifacts/metrics.json
-#   3. Builds themes   → artifacts/themes.json (calls Gemini API)
+# This runs all steps automatically:
+#   0. Fetches latest responses from Qualtrics API  → data/raw/survey_api.csv
+#   1. Cleans data (PII removal, anonymization)     → data/clean.csv
+#   2. Builds metrics & rollups                     → artifacts/metrics.json
+#   3. LLM thematic analysis (Gemini 2.5 Pro)       → artifacts/themes.json
 
-# Quick refresh (skip AI theme re-clustering):
-python scripts/refresh_data.py --skip-themes
+# Quick refresh (API fetch + skip AI theme re-clustering):
+python scripts/refresh_data.py --fetch --skip-themes
 
-# Or run steps individually:
-python scripts/load_qualtrics.py -i data/raw/survey.xlsx -o data/clean.csv
-python scripts/build_rollups.py -i data/clean.csv -o artifacts/
-python scripts/build_themes.py -i data/clean.csv -o artifacts/themes.json
+# Manual refresh (from local XLSX export):
+python scripts/refresh_data.py --input data/raw/survey.xlsx
+
+# Fetch-only (just download, don't process):
+python scripts/fetch_qualtrics_api.py
 ```
 
 ---
@@ -147,11 +155,11 @@ ua-parking-platform/
 ├── src/
 │   ├── app/
 │   │   ├── page.tsx              # Executive dashboard
-│   │   ├── chat/page.tsx         # RAG chat interface
-│   │   ├── evidence/page.tsx     # Theme explorer
+│   │   ├── chat/page.tsx         # Keyword chat interface
+│   │   ├── evidence/page.tsx     # Evidence Engine (theme explorer)
 │   │   └── api/
-│   │       ├── chat/route.ts     # RAG chat API (Gemini)
-│   │       └── evidence/route.ts # Evidence API
+│   │       ├── chat/route.ts     # Chat API (Gemini)
+│   │       └── evidence/route.ts # Evidence API (cache-invalidated)
 │   ├── components/
 │   │   ├── StatCard.tsx          # Animated metric cards
 │   │   ├── RankingsChart.tsx     # Weighted priority visualization
@@ -163,12 +171,14 @@ ua-parking-platform/
 │       └── data.ts               # Data loading utilities
 ├── scripts/
 │   ├── refresh_data.py           # ⭐ One-command pipeline orchestrator
-│   ├── load_qualtrics.py         # PII removal + anonymization
+│   ├── fetch_qualtrics_api.py    # Qualtrics API 3-step async export
+│   ├── load_qualtrics.py         # PII removal + anonymization (CSV/XLSX)
 │   ├── build_rollups.py          # Metrics with n/N format
-│   └── build_themes.py           # AI clustering pipeline
+│   ├── build_themes_llm.py       # ⭐ LLM thematic analysis (Gemini 2.5 Pro)
+│   └── build_themes.py           # Legacy: K-Means clustering (deprecated)
 ├── artifacts/
 │   ├── metrics.json              # Precomputed dashboard data
-│   └── themes.json               # AI-generated theme clusters
+│   └── themes.json               # LLM-generated theme analysis
 ├── data/
 │   ├── clean.csv                 # Anonymized survey responses
 │   └── raw/                      # Original files (gitignored)
@@ -221,13 +231,13 @@ npm run dev
 
 ## 📈 Roadmap
 
-- [x] Phase 0: Data pipeline + PII scrubbing
-- [x] Phase 1: Interactive dashboard
-- [x] Phase 2: AI theme clustering + Evidence Engine
+- [x] Phase 0: ETL pipeline + PII scrubbing
+- [x] Phase 1: Interactive executive dashboard
+- [x] Phase 2: AI theme analysis + Evidence Engine
 - [x] Phase 3: Keyword-based survey chat
-- [ ] Phase 3.5: True RAG (vector embeddings for retrieval)
-- [ ] Phase 4: PDF brief generator
-- [ ] Phase 5: Qualtrics API live fetch (pending API access)
+- [x] Phase 3.5: Qualtrics API live fetch (automated ETL)
+- [ ] Phase 4: True RAG (vector embeddings for semantic retrieval)
+- [ ] Phase 5: PDF brief generator (automated stakeholder reports)
 
 ---
 

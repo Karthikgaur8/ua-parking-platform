@@ -1,122 +1,180 @@
 {
   "metadata": {
-    "generated_at": "2026-01-26T23:22:40.453925",
-    "input_file": "data\\clean.csv",
-    "total_texts": 289,
-    "n_clusters": 4
+    "generated_at": "2026-02-26T00:02:16.716862",
+    "input_file": "data/clean.csv",
+    "total_texts": 1442,
+    "n_clusters": 6,
+    "method": "llm_thematic_analysis",
+    "model": "gemini-2.5-pro"
   },
   "themes": [
     {
-      "id": 1,
-      "label": "Closer Parking",
-      "count": 141,
-      "pct": 48.8,
-      "quotes": [
-        "More parking spots near halls more inner on campus that are ether pay to park or free",
-        "More parking spots close to campus ",
-        "Building more spots on campus so I don\u2019t have to park so far away from everything and walk a decent bit to class",
-        "More parking close to campus",
-        "more allowance of parking on campus - not huge specified lots but lots that allow more types of passes to park"
-      ],
-      "segments": {
-        "by_arrival_time": {
-          "8-10 AM": 89,
-          "Before 8 AM": 21,
-          "10 AM-12 PM": 16,
-          "After 2 PM": 12,
-          "12-2 PM": 3
-        },
-        "by_mode": {
-          "Personal vehicle (car, motorbike)": 124,
-          "Walk": 15,
-          "Carpool/ride\u2011share": 1,
-          "Public Transport": 1
-        },
-        "skip_rate": 0.8368794326241135
-      }
-    },
-    {
       "id": 0,
-      "label": "Add More Capacity",
-      "count": 88,
-      "pct": 30.4,
+      "label": "Increase Parking Supply",
+      "description": "Students feel there is a fundamental shortage of parking spaces, leading to frustration and wasted time. Many believe the university oversells permits, failing to guarantee a spot for which they have paid.",
+      "count": 685,
+      "pct": 47.5,
       "quotes": [
-        "More parking spots and less expensive rates",
-        "More parking spots. ",
-        "Add more parking. Allow people to park in areas that are more convenient to them. ",
-        "More parking spots",
-        "More parking spots"
+        "It\u2019s insane to pay that much and not be guaranteed a spot.",
+        "More passes sold than spots",
+        "Stop overselling permits for ridiculous prices when you know most students with permits are going to still have to use the pay to park lots because there\u2019s no spots in their $300 permit lot.",
+        "If I can\u2019t find a spot, I cannot go to class, as I also have a commuter parking pass. It is ridiculous for a University of this size, caliber, and ultimately cost for this to be an issue.",
+        "Don\u2019t sell more parking passes than parking spots"
       ],
       "segments": {
         "by_arrival_time": {
-          "8-10 AM": 54,
-          "10 AM-12 PM": 15,
-          "Before 8 AM": 10,
-          "12-2 PM": 5,
-          "After 2 PM": 4
+          "8-10 AM": 661,
+          "Before 8 AM": 221,
+          "10 AM-12 PM": 202,
+          "After 2 PM": 178,
+          "12-2 PM": 66
         },
         "by_mode": {
-          "Personal vehicle (car, motorbike)": 73,
-          "Walk": 10,
-          "Public Transport": 2,
-          "Bike/scooter": 2,
-          "Carpool/ride\u2011share": 1
+          "Personal vehicle (car, motorbike)": 1119,
+          "Walk": 190,
+          "Bike/scooter": 16,
+          "Public Transport": 11,
+          "Carpool/ride\u2011share": 3
         },
-        "skip_rate": 0.8295454545454546
+        "skip_rate": 0.765496639283047
       }
     },
     {
-      "id": 3,
-      "label": "Lower Costs",
-      "count": 31,
-      "pct": 10.7,
+      "id": 1,
+      "label": "Closer Parking Lots",
+      "description": "A major complaint is the excessive distance between designated student lots and academic buildings or dorms. Students report long, inconvenient walks that impact their ability to get to class on time, especially in bad weather.",
+      "count": 621,
+      "pct": 43.1,
       "quotes": [
-        "more spots and less expensive ",
-        "more spots and easier availability ",
-        "More spots. There is plenty of room ",
-        "more spots better location ",
-        "More spots that cost less"
-      ],
-      "segments": {
-        "by_arrival_time": {
-          "8-10 AM": 20,
-          "10 AM-12 PM": 7,
-          "After 2 PM": 2,
-          "12-2 PM": 1,
-          "Before 8 AM": 1
-        },
-        "by_mode": {
-          "Personal vehicle (car, motorbike)": 25,
-          "Walk": 6
-        },
-        "skip_rate": 0.8064516129032258
-      }
-    },
-    {
-      "id": 2,
-      "label": "Improve Transit",
-      "count": 29,
-      "pct": 10.0,
-      "quotes": [
-        "Express bus routes with fewer stops for communters. Waiting 20 minutes for a bus to take you from parking to class is less efficient than just walking.",
-        "Improve the Campus Ride - I would use it consistently around campus if it had consistent, predictable arrival and departure times. For example, the East Edge bus is extremely popular with students. It is popular because students know where it will take them, when it will arrive, and when it will get them to their destination. These factors allow students to plan public transportation into their routine. The on-campus routes, on the other hand, have no set schedule, so it is impossible to actually plan to use them unless you have an extra 3 hours in your day to wait around for one and wonder when it will get to you.",
-        "Lowering cost. It is ridiculous as a student to pay $400 extra for a spot when we already pay tuition plus a multitude of other fees. ",
-        "Make bus routes more spaced out, at regular intervals. Sometimes there's a wave of similar bus routes, meaning that you either wait a little bit of time for a bus or a very long time.",
-        "We need to adapt to common transit features like other campuses around the US. Passio go is too confusing to the average student. If students could track the busses and learn how to get somewhere just using maps, I\u2019m confident that Crimson Ride usage would greatly increase. "
+        "Reducing the cost OR making more parking that\u2019s closer to the central campus/quad area. I\u2019d be more willing to pay the ludicrous amount if it were decent parking.",
+        "More commuter parking closer to campus, not just orange and yellow passes. faculty has so many spots that aren\u2019t needed",
+        "Letting commuters park closer to the inside of campus rather than the perimeter. The shortest walk to class I have every day is the 15 minutes.",
+        "Making East Commuter parking lots CLOSER TO CLASSES. The closest lot is a 10 minute walk to North Lawn or SERC. I pay for a parking pass and on most days I still have to pay to park just to be near my classes",
+        "I shouldn't have to be walking over thirty minutes to get to my classes some days. Especially when the weather is bad it makes it impossible to get there, or I get extremely sick."
       ],
       "segments": {
         "by_arrival_time": {
           "8-10 AM": 16,
+          "10 AM-12 PM": 5,
           "Before 8 AM": 5,
-          "10 AM-12 PM": 4,
-          "12-2 PM": 2,
-          "After 2 PM": 2
+          "After 2 PM": 1
         },
         "by_mode": {
-          "Personal vehicle (car, motorbike)": 22,
-          "Walk": 7
+          "Personal vehicle (car, motorbike)": 26,
+          "Walk": 1
         },
-        "skip_rate": 0.7241379310344828
+        "skip_rate": 0.7777777777777778
+      }
+    },
+    {
+      "id": 2,
+      "label": "Reduce Permit Costs",
+      "description": "Students perceive parking permits and fines as excessively expensive and a significant financial burden. They feel the high cost is not justified by the poor availability and inconvenient location of the parking provided.",
+      "count": 374,
+      "pct": 25.9,
+      "quotes": [
+        "Lower the cost of passes!",
+        "Price. Should be less than $100. You\u2019re already taking tens of thousands of dollars for tuition from the average student",
+        "We already pay so much to attend this university, so I would really appreciate it if they didn\u2019t charge an arm and a leg to get on campus.",
+        "Lowering cost. It is ridiculous as a student to pay $400 extra for a spot when we already pay tuition plus a multitude of other fees.",
+        "Why is my parking pass so expensive, I already pay to come here is really feel it makes no sense for the school to try and make money off my ability to get to and from my classes."
+      ],
+      "segments": {
+        "by_arrival_time": {
+          "8-10 AM": 14,
+          "10 AM-12 PM": 5,
+          "After 2 PM": 3,
+          "12-2 PM": 2,
+          "Before 8 AM": 2
+        },
+        "by_mode": {
+          "Personal vehicle (car, motorbike)": 20,
+          "Walk": 4,
+          "Public Transport": 2
+        },
+        "skip_rate": 0.9230769230769231
+      }
+    },
+    {
+      "id": 3,
+      "label": "Revise Parking System & Zones",
+      "description": "The current system of zoned parking, special permits, and allocation of spots is a source of frustration. Students frequently cite the large number of empty faculty spots and the conversion of permit spaces to pay-to-park as unfair.",
+      "count": 338,
+      "pct": 23.4,
+      "quotes": [
+        "I think there should be a pass that allows a student to park in all decks on campus.",
+        "Decrease number of faculty lots and give those to students - More often than not I will pass by a lot for Faculty and it\u2019s only half full.",
+        "The one change to campus parking that would make the biggest difference to me is if the university would stop replacing normal parking spaces with pay to park spaces.",
+        "If you get a student parking pass, then you should be able to park anywhere on campus for free as long as it\u2019s a student lot.",
+        "Get rid of the East/West commuter passes and make it one commuter pass."
+      ],
+      "segments": {
+        "by_arrival_time": {
+          "8-10 AM": 18,
+          "Before 8 AM": 6,
+          "After 2 PM": 3,
+          "10 AM-12 PM": 3
+        },
+        "by_mode": {
+          "Personal vehicle (car, motorbike)": 28,
+          "Walk": 2
+        },
+        "skip_rate": 0.8
+      }
+    },
+    {
+      "id": 4,
+      "label": "Reform Ticketing & Enforcement",
+      "description": "Students describe parking enforcement as overly aggressive, inflexible, and predatory. They feel they are unfairly ticketed for minor infractions or in situations where no other parking is available due to oversold lots.",
+      "count": 215,
+      "pct": 14.9,
+      "quotes": [
+        "Stop being so stingy and giving tickets to people who are paying for parking passes and never have anywhere to park.",
+        "I would really like if sorority row can be 15 min parking. A lot of the time I find myself and others are simply just trying to pick up a meal to go and leave and within a minute there\u2019s a ticket on the car.",
+        "the parking tickets are terrible. I forgot to pay the paid parking before class and the class got canceled 5minutes into to class and by the time i got back the parking lady was there to write me a ticket she said she saw me walk in i told her i\u2019ll pay the fee and still drive off but she still gave me a ticket.",
+        "Stop ticketing people for their mess up of overselling parking passes. Why am I paying for your mistake?",
+        "Feel like ticketers have a quota and gives no grace when we are just trying to get to class. Having to pay extra feels like yall are money hungry and taking extra money that we already pay for school."
+      ],
+      "segments": {
+        "by_arrival_time": {
+          "10 AM-12 PM": 5,
+          "8-10 AM": 2,
+          "Before 8 AM": 2,
+          "After 2 PM": 1
+        },
+        "by_mode": {
+          "Personal vehicle (car, motorbike)": 8,
+          "Walk": 2
+        },
+        "skip_rate": 0.9
+      }
+    },
+    {
+      "id": 5,
+      "label": "Improve Bus System",
+      "description": "Many students would rely less on parking if the campus bus system were more reliable, frequent, and easier to navigate. Complaints focus on slow routes, inaccurate tracking apps, and long wait times, making the bus an inefficient alternative.",
+      "count": 92,
+      "pct": 6.4,
+      "quotes": [
+        "Quicker/direct bus routes from farther lots/decks",
+        "Express bus routes with fewer stops for communters. Waiting 20 minutes for a bus to take you from parking to class is less efficient than just walking.",
+        "The passio go app is so confusing. I\u2019ve never rode the crimson ride because it\u2019s so impossible to figure out the bus routes on that app",
+        "Improve the Campus Ride - I would use it consistently around campus if it had consistent, predictable arrival and departure times.",
+        "I wouldn't care about parking on the edge of campus if the busses were reliable."
+      ],
+      "segments": {
+        "by_arrival_time": {
+          "8-10 AM": 4,
+          "10 AM-12 PM": 3,
+          "Before 8 AM": 2,
+          "12-2 PM": 1
+        },
+        "by_mode": {
+          "Personal vehicle (car, motorbike)": 7,
+          "Walk": 2,
+          "Carpool/ride\u2011share": 1
+        },
+        "skip_rate": 0.8
       }
     }
   ]

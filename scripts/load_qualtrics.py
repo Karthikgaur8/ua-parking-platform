@@ -20,6 +20,10 @@ from pathlib import Path
 
 import pandas as pd
 
+# Fix Windows terminal encoding for emoji/Unicode
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
 
 # PII columns to drop completely
 PII_COLUMNS = [
@@ -85,13 +89,23 @@ PHONE_PATTERN = re.compile(r'\b\d{3}[-.]?\d{3}[-.]?\d{4}\b')
 
 
 def load_qualtrics(file_path: Path) -> pd.DataFrame:
-    """Load Qualtrics XLSX and clean header rows."""
+    """Load Qualtrics export (XLSX or CSV) and clean header rows."""
     print(f"Loading {file_path}...")
-    df = pd.read_excel(file_path)
     
-    # First row is question text, drop it
-    df = df.iloc[2:].copy()
-    df = df.reset_index(drop=True)
+    suffix = file_path.suffix.lower()
+    if suffix == '.csv':
+        df = pd.read_csv(file_path, encoding='utf-8')
+    elif suffix in ('.xlsx', '.xls'):
+        df = pd.read_excel(file_path)
+    else:
+        print(f"  Warning: Unknown extension '{suffix}', trying CSV...")
+        df = pd.read_csv(file_path, encoding='utf-8')
+    
+    # Qualtrics exports have 2 metadata header rows (question text + import IDs)
+    # Row 0 = column names (already used by pandas), rows 1-2 = metadata → drop
+    if len(df) > 2:
+        df = df.iloc[2:].copy()
+        df = df.reset_index(drop=True)
     
     print(f"  Loaded {len(df)} rows (after dropping header rows)")
     return df

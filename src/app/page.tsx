@@ -15,7 +15,7 @@ export default async function Dashboard() {
 
   return (
     <main className="min-h-screen text-white relative">
-      <NavHeader subtitle={`Survey Dashboard • ${metrics.total_responses.completed} responses`} />
+      <NavHeader subtitle={`Survey Dashboard • ${metrics.total_responses.n} responses`} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Hero Stats */}

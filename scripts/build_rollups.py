@@ -14,10 +14,15 @@ This script:
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+
+# Fix Windows terminal encoding for emoji/Unicode
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 
 def compute_pfs(ease: str, minutes: float, skipped: bool) -> float:

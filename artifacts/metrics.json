@@ -1,281 +1,281 @@
 {
   "metadata": {
-    "generated_at": "2026-01-25T19:54:30.118735",
-    "input_file": "data\\clean.csv",
-    "total_rows": 394
+    "generated_at": "2026-02-25T22:58:56.419638",
+    "input_file": "C:\\Users\\karth\\.gemini\\antigravity\\scratch\\ua-parking-platform\\data\\clean.csv",
+    "total_rows": 1766
   },
   "metrics": {
     "total_responses": {
-      "n": 394,
-      "completed": 329
+      "n": 1766,
+      "completed": 1547
     },
     "mode_distribution": {
       "counts": {
-        "Personal vehicle (car, motorbike)": 336,
-        "Walk": 47,
-        "Carpool/ride\u2011share": 4,
-        "Public Transport": 3,
-        "Bike/scooter": 2
+        "Personal vehicle (car, motorbike)": 1478,
+        "Walk": 246,
+        "Bike/scooter": 17,
+        "Public Transport": 14,
+        "Carpool/ride\u2011share": 8
       },
-      "total": 392
+      "total": 1763
     },
     "frequency_distribution": {
       "counts": {
-        "Daily": 299,
-        "3-4 times a week": 57,
-        "1-2 times a week": 31,
-        "Never": 5
+        "Daily": 1349,
+        "3-4 times a week": 293,
+        "1-2 times a week": 107,
+        "Never": 14
       },
-      "total": 392
+      "total": 1763
     },
     "ease_distribution": {
       "counts": {
-        "Very Difficult": 178,
-        "Difficult": 135,
-        "Neutral": 52,
-        "Easy": 19,
-        "Very Easy": 8
+        "Very Difficult": 745,
+        "Difficult": 590,
+        "Neutral": 227,
+        "Easy": 149,
+        "Very Easy": 52
       },
-      "total": 392,
+      "total": 1763,
       "difficult_rate": {
-        "n": 313,
-        "N": 392,
-        "pct": 79.8
+        "n": 1335,
+        "N": 1763,
+        "pct": 75.7
       }
     },
     "arrival_distribution": {
       "counts": {
-        "8-10 AM": 236,
-        "10 AM-12 PM": 66,
-        "Before 8 AM": 51,
-        "After 2 PM": 23,
-        "12-2 PM": 13
+        "8-10 AM": 874,
+        "Before 8 AM": 286,
+        "10 AM-12 PM": 285,
+        "After 2 PM": 216,
+        "12-2 PM": 86
       },
-      "total": 389
+      "total": 1747
     },
     "skip_rate": {
-      "n": 310,
-      "N": 388,
-      "pct": 79.9
+      "n": 1351,
+      "N": 1757,
+      "pct": 76.9
     },
     "minutes_searching": {
       "mean": 14.5,
       "median": 10.0,
       "min": 0.0,
-      "max": 90.0,
-      "n": 370
+      "max": 1000.0,
+      "n": 1705
     },
     "pay_to_park_sentiment": {
       "counts": {
-        "Need a lot less of them": 104,
-        "Need slightly more of them": 82,
-        "Need a lot more of them": 66,
-        "Keep the same number": 47,
-        "Need slightly less of them": 31,
+        "Need a lot less of them": 504,
+        "Need slightly more of them": 304,
+        "Need a lot more of them": 272,
+        "Keep the same number": 267,
+        "Need slightly less of them": 203,
         "5": 1,
         "4": 1
       },
-      "total": 332
+      "total": 1552
     },
     "crimson_ride_awareness": {
-      "n": 263,
-      "N": 332,
-      "pct": 79.2
+      "n": 1231,
+      "N": 1552,
+      "pct": 79.3
     },
     "crimson_ride_willingness": {
-      "n": 182,
-      "N": 327,
-      "pct": 55.7
+      "n": 806,
+      "N": 1541,
+      "pct": 52.3
     }
   },
   "rankings": {
     "Too few spots": {
       "rank_counts": {
-        "1": 186,
-        "2": 97,
-        "3": 73,
-        "4": 14,
-        "5": 2,
-        "6": 1
+        "1": 881,
+        "2": 429,
+        "3": 297,
+        "4": 65,
+        "5": 11,
+        "6": 10
       },
-      "weighted_score": 825,
-      "top3_count": 356,
-      "top3_pct": 95.4,
-      "total_ranked": 373
+      "weighted_score": 3798,
+      "top3_count": 1607,
+      "top3_pct": 94.9,
+      "total_ranked": 1693
     },
     "Distance from classes": {
       "rank_counts": {
-        "2": 157,
-        "3": 99,
-        "1": 84,
-        "4": 21,
-        "5": 11,
-        "6": 1
+        "2": 695,
+        "1": 434,
+        "3": 390,
+        "4": 112,
+        "5": 48,
+        "6": 14
       },
-      "weighted_score": 665,
-      "top3_count": 340,
-      "top3_pct": 91.2,
-      "total_ranked": 373
+      "weighted_score": 3082,
+      "top3_count": 1519,
+      "top3_pct": 89.7,
+      "total_ranked": 1693
     },
     "High cost": {
       "rank_counts": {
-        "3": 127,
-        "2": 101,
-        "1": 91,
-        "4": 36,
-        "5": 17,
-        "6": 1
+        "3": 636,
+        "2": 435,
+        "1": 322,
+        "4": 197,
+        "5": 81,
+        "6": 22
       },
-      "weighted_score": 602,
-      "top3_count": 319,
-      "top3_pct": 85.5,
-      "total_ranked": 373
+      "weighted_score": 2472,
+      "top3_count": 1393,
+      "top3_pct": 82.3,
+      "total_ranked": 1693
     },
     "Other": {
       "rank_counts": {
-        "6": 306,
-        "4": 20,
-        "3": 18,
-        "5": 14,
-        "2": 8,
-        "1": 7
+        "6": 1355,
+        "3": 93,
+        "4": 82,
+        "5": 65,
+        "2": 59,
+        "1": 39
       },
-      "weighted_score": 55,
-      "top3_count": 33,
-      "top3_pct": 8.8,
-      "total_ranked": 373
+      "weighted_score": 328,
+      "top3_count": 191,
+      "top3_pct": 11.3,
+      "total_ranked": 1693
     },
     "Poor navigation": {
       "rank_counts": {
-        "5": 193,
-        "4": 102,
-        "6": 37,
-        "3": 36,
-        "2": 4,
-        "1": 1
+        "5": 860,
+        "4": 449,
+        "3": 172,
+        "6": 167,
+        "2": 38,
+        "1": 7
       },
-      "weighted_score": 47,
-      "top3_count": 41,
-      "top3_pct": 11.0,
-      "total_ranked": 373
+      "weighted_score": 269,
+      "top3_count": 217,
+      "top3_pct": 12.8,
+      "total_ranked": 1693
     },
     "Security concerns": {
       "rank_counts": {
-        "4": 180,
-        "5": 136,
-        "6": 27,
-        "3": 20,
-        "2": 6,
-        "1": 4
+        "4": 788,
+        "5": 628,
+        "6": 125,
+        "3": 105,
+        "2": 37,
+        "1": 10
       },
-      "weighted_score": 44,
-      "top3_count": 30,
-      "top3_pct": 8.0,
-      "total_ranked": 373
+      "weighted_score": 209,
+      "top3_count": 152,
+      "top3_pct": 9.0,
+      "total_ranked": 1693
     }
   },
   "segments": {
     "by_arrival_time": {
       "10 AM-12 PM": {
-        "n": 66,
-        "avg_pfs": 0.671,
-        "skip_rate": 87.9,
-        "avg_minutes": 16.4
+        "n": 285,
+        "avg_pfs": 0.639,
+        "skip_rate": 86.0,
+        "avg_minutes": 17.4
       },
       "12-2 PM": {
-        "n": 13,
-        "avg_pfs": 0.704,
-        "skip_rate": 92.3,
-        "avg_minutes": 15.8
-      },
-      "8-10 AM": {
-        "n": 236,
-        "avg_pfs": 0.634,
-        "skip_rate": 80.0,
-        "avg_minutes": 14.5
-      },
-      "After 2 PM": {
-        "n": 23,
-        "avg_pfs": 0.686,
-        "skip_rate": 91.3,
+        "n": 86,
+        "avg_pfs": 0.648,
+        "skip_rate": 80.2,
         "avg_minutes": 14.9
       },
+      "8-10 AM": {
+        "n": 874,
+        "avg_pfs": 0.596,
+        "skip_rate": 78.6,
+        "avg_minutes": 12.9
+      },
+      "After 2 PM": {
+        "n": 216,
+        "avg_pfs": 0.651,
+        "skip_rate": 72.2,
+        "avg_minutes": 17.6
+      },
       "Before 8 AM": {
-        "n": 51,
-        "avg_pfs": 0.523,
-        "skip_rate": 62.0,
-        "avg_minutes": 11.0
+        "n": 286,
+        "avg_pfs": 0.545,
+        "skip_rate": 65.7,
+        "avg_minutes": 13.9
       }
     },
     "by_mode": {
       "Bike/scooter": {
-        "n": 2,
-        "avg_pfs": 0.345,
-        "skip_rate": 0.0
+        "n": 17,
+        "avg_pfs": 0.415,
+        "skip_rate": 35.3
       },
       "Carpool/ride\u2011share": {
-        "n": 4,
-        "avg_pfs": 0.518,
+        "n": 8,
+        "avg_pfs": 0.594,
         "skip_rate": 75.0
       },
       "Personal vehicle (car, motorbike)": {
-        "n": 336,
-        "avg_pfs": 0.626,
-        "skip_rate": 79.2
+        "n": 1478,
+        "avg_pfs": 0.604,
+        "skip_rate": 78.1
       },
       "Public Transport": {
-        "n": 3,
-        "avg_pfs": 0.682,
-        "skip_rate": 100.0
+        "n": 14,
+        "avg_pfs": 0.649,
+        "skip_rate": 92.9
       },
       "Walk": {
-        "n": 47,
-        "avg_pfs": 0.683,
-        "skip_rate": 87.2
+        "n": 246,
+        "avg_pfs": 0.609,
+        "skip_rate": 69.9
       }
     },
     "by_frequency": {
       "1-2 times a week": {
-        "n": 31,
-        "avg_pfs": 0.706,
-        "skip_rate": 96.8
+        "n": 107,
+        "avg_pfs": 0.63,
+        "skip_rate": 83.2
       },
       "3-4 times a week": {
-        "n": 57,
-        "avg_pfs": 0.62,
-        "skip_rate": 78.9
+        "n": 293,
+        "avg_pfs": 0.57,
+        "skip_rate": 70.3
       },
       "Daily": {
-        "n": 299,
-        "avg_pfs": 0.626,
-        "skip_rate": 78.7
+        "n": 1349,
+        "avg_pfs": 0.609,
+        "skip_rate": 77.7
       },
       "Never": {
-        "n": 5,
-        "avg_pfs": 0.559,
-        "skip_rate": 50.0
+        "n": 14,
+        "avg_pfs": 0.551,
+        "skip_rate": 57.1
       }
     }
   },
   "ada": {
-    "opted_in": 79,
+    "opted_in": 296,
     "satisfaction": {
       "counts": {
-        "Neither satisfied nor dissatisfied": 32,
-        "Somewhat dissatisfied": 18,
-        "Very satisfied": 9,
-        "Somewhat satisfied": 9,
-        "Very dissatisfied": 7
+        "Neither satisfied nor dissatisfied": 125,
+        "Somewhat dissatisfied": 56,
+        "Very dissatisfied": 40,
+        "Somewhat satisfied": 36,
+        "Very satisfied": 32
       },
-      "total": 79
+      "total": 296
     },
     "adequacy": {
       "counts": {
-        "Unsure": 29,
-        "Yes": 28,
-        "No": 19
+        "Unsure": 122,
+        "Yes": 103,
+        "No": 65
       },
-      "total": 79
+      "total": 296
     }
   }
 }
