@@ -18,6 +18,8 @@ Real-time visualization of survey insights with **consulting-grade metrics**:
 - **Top Challenge**: Too few spots (weighted score: 3798)
 - **1,766 responses** from Qualtrics API live fetch
 
+![Dashboard Preview](docs/dashboard_preview.png)
+
 ### 🧠 LLM-Powered Thematic Analysis
 Gemini 2.5 Pro performs full qualitative thematic analysis on all 1,442 free-text responses in a single pass — the same way a research consultant would, but in 48 seconds.
 
@@ -46,42 +48,34 @@ Gemini 2.5 Pro performs full qualitative thematic analysis on all 1,442 free-tex
 
 ## 🏗️ Architecture
 
-```
-┌───────────────────────────────────────────────────────────────────────────────┐
-│                    AUTOMATED ETL PIPELINE (Python)                           │
-│              One command: python scripts/refresh_data.py --fetch             │
-├───────────────────────────────────────────────────────────────────────────────┤
-│                                                                               │
-│  EXTRACT              TRANSFORM                      LOAD                     │
-│  ───────              ─────────                      ────                     │
-│  Qualtrics API        ┌──────────────┐               ┌──────────────────┐     │
-│  (3-step async  ───►  │ PII Scrub    │  ──────────►   │ artifacts/       │     │
-│   export flow)        │ • Drop PII   │               │ • metrics.json   │     │
-│                       │ • Anonymize  │               │ • themes.json    │     │
-│  survey_api.csv       │ • Filter     │               └──────────────────┘     │
-│                       └──────┬───────┘                                        │
-│                              │                                                │
-│                       ┌──────▼───────┐    ┌─────────────────────────────┐      │
-│                       │ Metrics      │    │ LLM Thematic Analysis      │      │
-│                       │ • PFS scores │    │                             │      │
-│                       │ • Rankings   │    │ • Gemini 2.5 Pro reads ALL │      │
-│                       │ • Segments   │    │   1442 comments in 1 pass  │      │
-│                       │ • n/N format │    │ • Multi-label theme tags   │      │
-│                       └──────────────┘    │ • Curated verbatim quotes  │      │
-│                                           └─────────────────────────────┘      │
-│                                                                               │
-└───────────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
-┌───────────────────────────────────────────────────────────────────────────────┐
-│                         DASHBOARD (Next.js 16)                                │
-│                    Reads JSON artifacts at build/runtime                      │
-├───────────────────────────────────────────────────────────────────────────────┤
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌────────────────┐     │
-│  │  StatCards   │  │  Rankings    │  │  Evidence    │  │  Keyword       │     │
-│  │  (animated)  │  │  (weighted)  │  │  Engine      │  │  Chat          │     │
-│  └──────────────┘  └──────────────┘  └──────────────┘  └────────────────┘     │
-└───────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph EXTRACT["🔌 EXTRACT"]
+        A["Qualtrics API v3\n3-step async export"] --> B["survey_api.csv\n~1,800 responses"]
+    end
+
+    subgraph TRANSFORM["⚙️ TRANSFORM"]
+        B --> C["PII Scrub\n• Drop emails, IPs\n• Anonymize text\n• Filter previews"]
+        C --> D["clean.csv\n1,766 rows"]
+        D --> E["Metrics Engine\n• PFS scores\n• Rankings\n• Segments"]
+        D --> F["LLM Analysis\nGemini 2.5 Pro\n• Read ALL comments\n• Multi-label themes\n• Curated quotes"]
+    end
+
+    subgraph LOAD["📊 LOAD"]
+        E --> G["metrics.json"]
+        F --> H["themes.json"]
+    end
+
+    subgraph DASHBOARD["🖥️ DASHBOARD — Next.js 16"]
+        G --> I["StatCards\nRankings\nSegments"]
+        H --> J["Evidence Engine\nTheme Explorer"]
+        I --> K["Keyword Chat\nGemini API"]
+    end
+
+    style EXTRACT fill:#1a1a2e,stroke:#e94560,color:#fff
+    style TRANSFORM fill:#1a1a2e,stroke:#0f3460,color:#fff
+    style LOAD fill:#1a1a2e,stroke:#16213e,color:#fff
+    style DASHBOARD fill:#1a1a2e,stroke:#533483,color:#fff
 ```
 
 ---
