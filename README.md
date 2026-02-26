@@ -18,7 +18,7 @@ Real-time visualization of survey insights with **consulting-grade metrics**:
 - **Top Challenge**: Too few spots (weighted score: 3798)
 - **1,766 responses** from Qualtrics API live fetch
 
-![Dashboard Preview](docs/dashboard_preview.png)
+![Dashboard Preview](docs/Dashboard_preview.png)
 
 ### 🧠 LLM-Powered Thematic Analysis
 Gemini 2.5 Pro performs full qualitative thematic analysis on all 1,442 free-text responses in a single pass — the same way a research consultant would, but in 48 seconds.
