@@ -27,11 +27,16 @@ export function SentimentBar({ data, title }: SentimentBarProps) {
     const totalLess = pctLotLess + pctSlightlyLess;
     const totalMore = pctSlightlyMore + pctLotMore;
 
+    // Weighted mean on -2 to +2 Likert scale
+    const weightedMean = total > 0
+        ? (-2 * lotLess + -1 * slightlyLess + 0 * keepSame + 1 * slightlyMore + 2 * lotMore) / total
+        : 0;
+
     // Determine overall sentiment
-    const sentiment = totalMore > totalLess
-        ? { label: 'Want MORE', color: 'text-emerald-400', arrow: '→' }
-        : totalLess > totalMore
-            ? { label: 'Want LESS', color: 'text-rose-400', arrow: '←' }
+    const sentiment = weightedMean > 0
+        ? { label: 'Lean MORE', color: 'text-emerald-400', arrow: '→' }
+        : weightedMean < 0
+            ? { label: 'Lean LESS', color: 'text-rose-400', arrow: '←' }
             : { label: 'Balanced', color: 'text-gray-400', arrow: '↔' };
 
     return (
@@ -51,7 +56,7 @@ export function SentimentBar({ data, title }: SentimentBarProps) {
                         {sentiment.arrow} {sentiment.label}
                     </span>
                     <span className="text-sm text-gray-500">
-                        ({Math.abs(totalMore - totalLess).toFixed(1)}% margin)
+                        ({weightedMean >= 0 ? '+' : ''}{weightedMean.toFixed(2)} on ±2 scale)
                     </span>
                 </div>
 
@@ -60,19 +65,6 @@ export function SentimentBar({ data, title }: SentimentBarProps) {
                     <div className="flex items-center gap-1">
                         {/* Left side - Want Less */}
                         <div className="flex-1 flex justify-end gap-0.5">
-                            {pctSlightlyLess > 0 && (
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${(pctSlightlyLess / (totalLess + pctKeepSame / 2)) * 100}%` }}
-                                    transition={{ duration: 0.8, delay: 0.2 }}
-                                    className="h-10 bg-rose-400/60 rounded-l-sm flex items-center justify-center overflow-hidden"
-                                    title={`Slightly less: ${slightlyLess} (${pctSlightlyLess.toFixed(1)}%)`}
-                                >
-                                    {pctSlightlyLess > 8 && (
-                                        <span className="text-xs text-white/80 font-medium">{pctSlightlyLess.toFixed(0)}%</span>
-                                    )}
-                                </motion.div>
-                            )}
                             {pctLotLess > 0 && (
                                 <motion.div
                                     initial={{ width: 0 }}
@@ -83,6 +75,19 @@ export function SentimentBar({ data, title }: SentimentBarProps) {
                                 >
                                     {pctLotLess > 8 && (
                                         <span className="text-xs text-white font-medium">{pctLotLess.toFixed(0)}%</span>
+                                    )}
+                                </motion.div>
+                            )}
+                            {pctSlightlyLess > 0 && (
+                                <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${(pctSlightlyLess / (totalLess + pctKeepSame / 2)) * 100}%` }}
+                                    transition={{ duration: 0.8, delay: 0.2 }}
+                                    className="h-10 bg-rose-400/60 flex items-center justify-center overflow-hidden"
+                                    title={`Slightly less: ${slightlyLess} (${pctSlightlyLess.toFixed(1)}%)`}
+                                >
+                                    {pctSlightlyLess > 8 && (
+                                        <span className="text-xs text-white/80 font-medium">{pctSlightlyLess.toFixed(0)}%</span>
                                     )}
                                 </motion.div>
                             )}
@@ -101,6 +106,19 @@ export function SentimentBar({ data, title }: SentimentBarProps) {
 
                         {/* Right side - Want More */}
                         <div className="flex-1 flex gap-0.5">
+                            {pctSlightlyMore > 0 && (
+                                <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${(pctSlightlyMore / (totalMore + pctKeepSame / 2)) * 100}%` }}
+                                    transition={{ duration: 0.8, delay: 0.2 }}
+                                    className="h-10 bg-emerald-400/60 flex items-center justify-center overflow-hidden"
+                                    title={`Slightly more: ${slightlyMore} (${pctSlightlyMore.toFixed(1)}%)`}
+                                >
+                                    {pctSlightlyMore > 8 && (
+                                        <span className="text-xs text-white/80 font-medium">{pctSlightlyMore.toFixed(0)}%</span>
+                                    )}
+                                </motion.div>
+                            )}
                             {pctLotMore > 0 && (
                                 <motion.div
                                     initial={{ width: 0 }}
@@ -111,19 +129,6 @@ export function SentimentBar({ data, title }: SentimentBarProps) {
                                 >
                                     {pctLotMore > 8 && (
                                         <span className="text-xs text-white font-medium">{pctLotMore.toFixed(0)}%</span>
-                                    )}
-                                </motion.div>
-                            )}
-                            {pctSlightlyMore > 0 && (
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${(pctSlightlyMore / (totalMore + pctKeepSame / 2)) * 100}%` }}
-                                    transition={{ duration: 0.8, delay: 0.2 }}
-                                    className="h-10 bg-emerald-400/60 rounded-r-sm flex items-center justify-center overflow-hidden"
-                                    title={`Slightly more: ${slightlyMore} (${pctSlightlyMore.toFixed(1)}%)`}
-                                >
-                                    {pctSlightlyMore > 8 && (
-                                        <span className="text-xs text-white/80 font-medium">{pctSlightlyMore.toFixed(0)}%</span>
                                     )}
                                 </motion.div>
                             )}
