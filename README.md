@@ -105,7 +105,7 @@ flowchart TD
 
 ```bash
 # Clone and install
-git clone https://github.com/YOUR_USERNAME/ua-parking-platform.git
+git clone https://github.com/Karthikgaur8/ua-parking-platform.git
 cd ua-parking-platform
 npm install
 pip install -r requirements.txt
@@ -181,7 +181,7 @@ ua-parking-platform/
 
 ---
 
-## � Privacy & Governance
+## 🔒 Privacy & Governance
 
 This platform implements **privacy-by-design**:
 
@@ -192,7 +192,7 @@ This platform implements **privacy-by-design**:
 
 ---
 
-## � Key Metrics Formulas
+## 📐 Key Metrics Formulas
 
 ### Parking Friction Score (PFS)
 Weighted composite score (0-1 scale):

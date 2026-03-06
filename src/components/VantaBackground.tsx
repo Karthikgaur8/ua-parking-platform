@@ -26,18 +26,15 @@ export default function VantaBackground() {
 
         // Check that THREE is fully ready
         if (!win.THREE || !win.THREE.PerspectiveCamera) {
-            console.log('THREE.js not ready, waiting...');
             return;
         }
 
         // Check that VANTA.NET is ready
         if (!win.VANTA || !win.VANTA.NET) {
-            console.log('VANTA.NET not ready, waiting...');
             return;
         }
 
         try {
-            console.log('Initializing VANTA.NET...');
             const effect = win.VANTA.NET({
                 el: vantaRef.current,
                 mouseControls: true,
@@ -54,7 +51,6 @@ export default function VantaBackground() {
                 spacing: 15.00,
                 showDots: true,
             });
-            console.log('VANTA.NET initialized successfully');
             setVantaEffect(effect);
         } catch (error) {
             console.error('Failed to initialize VANTA.NET:', error);
@@ -94,12 +90,10 @@ export default function VantaBackground() {
     }, [vantaEffect]);
 
     const handleThreeLoad = () => {
-        console.log('THREE.js loaded');
         setThreeLoaded(true);
     };
 
     const handleVantaLoad = () => {
-        console.log('VANTA.NET loaded');
         setVantaLoaded(true);
     };
 
