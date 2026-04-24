@@ -47,3 +47,44 @@ export async function getMetrics(): Promise<Metrics> {
     const fileContents = fs.readFileSync(filePath, 'utf8');
     return JSON.parse(fileContents);
 }
+
+export interface FeatureImportance {
+    feature: string;
+    importance: number;
+}
+
+export interface ModelResult {
+    best_params: Record<string, unknown>;
+    cv_f1: number;
+    test_accuracy: number;
+    test_f1: number;
+    test_auc: number;
+    confusion_matrix: number[][];
+    roc_curve: { fpr: number[]; tpr: number[] };
+}
+
+export interface ModelInsights {
+    metadata: {
+        generated_at: string;
+        dataset_rows: number;
+        modeling_rows: number;
+        n_features: number;
+        target: string;
+        positive_rate: number;
+        test_size: number;
+        train_size: number;
+    };
+    engineered_features: { name: string; description: string }[];
+    models: {
+        logistic_regression: ModelResult & { shap_importance: FeatureImportance[] };
+        random_forest: ModelResult & { feature_importance: FeatureImportance[] };
+    };
+    baseline: { accuracy: number; f1: number; description: string };
+    dose_response: { ease: string; skip_rate: number; n: number }[];
+}
+
+export async function getModelInsights(): Promise<ModelInsights> {
+    const filePath = path.join(process.cwd(), 'artifacts', 'model_insights.json');
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    return JSON.parse(fileContents);
+}
