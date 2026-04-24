@@ -13,6 +13,7 @@ export default function NavHeader({ subtitle }: NavHeaderProps) {
     const navLinks = [
         { href: '/', label: 'Dashboard' },
         { href: '/evidence', label: 'Evidence' },
+        { href: '/models', label: 'Models' },
         { href: '/chat', label: '🤖 Chat' },
     ];
 
